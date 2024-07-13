@@ -10,4 +10,5 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @RequiredArgsConstructor
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
+
 }
