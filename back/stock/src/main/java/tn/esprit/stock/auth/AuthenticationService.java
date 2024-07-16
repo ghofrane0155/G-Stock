@@ -2,9 +2,14 @@ package tn.esprit.stock.auth;
 
 
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.stock.email.EmailService;
 import tn.esprit.stock.email.EmailTemplateName;
 import tn.esprit.stock.role.IRoleRepository;
+import tn.esprit.stock.security.JwtService;
 import tn.esprit.stock.user.ITokenRepository;
 import tn.esprit.stock.user.IUserRepository;
 import tn.esprit.stock.user.Token;
@@ -19,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -29,10 +35,14 @@ public class AuthenticationService {
     private final IRoleRepository roleRepository;
     private final EmailService emailService;
     private final ITokenRepository tokenRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+
 
     @Value("${application.mailing.frontend.activation-url}")
     private String activationUrl;
 
+    //register
     public void register(RegistrationRequest request) throws MessagingException {
         var userRole = roleRepository.findByName("USER")
                 // todo - better exception handling
@@ -88,13 +98,11 @@ public class AuthenticationService {
         return codeBuilder.toString();
     }
 
-
-  /*  public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    //login
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
+                        request.getEmail(), request.getPassword())
         );
 
         var claims = new HashMap<String, Object>();
@@ -102,12 +110,11 @@ public class AuthenticationService {
         claims.put("fullName", user.getFullName());
 
         var jwtToken = jwtService.generateToken(claims, (User) auth.getPrincipal());
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+        return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
-    @Transactional
+    //activateAccount
+    //@Transactional
     public void activateAccount(String token) throws MessagingException {
         Token savedToken = tokenRepository.findByToken(token)
                 // todo exception has to be defined
@@ -125,10 +132,5 @@ public class AuthenticationService {
         savedToken.setValidatedAt(LocalDateTime.now());
         tokenRepository.save(savedToken);
     }
-
-    */
-
-
-
 
 }

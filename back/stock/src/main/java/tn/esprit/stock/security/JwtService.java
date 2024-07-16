@@ -49,10 +49,7 @@ public class JwtService {
         return buildToken(claims,userDetails,jwtExpiration);
     }
 
-    private String buildToken(
-            Map<String, Object> extraClaims,
-            UserDetails userDetails,
-            long jwtExpiration)
+    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long jwtExpiration)
     {
         var authorities=userDetails.getAuthorities()
                 .stream()
