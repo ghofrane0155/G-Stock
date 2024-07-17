@@ -31,8 +31,16 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
+    //activate account
     @GetMapping("/activate-account")
     public void confirm(@RequestParam String token) throws MessagingException {
         service.activateAccount(token);
+    }
+
+    //reset password
+    @PatchMapping("/resetpass/{userId}")
+    public ResponseEntity<?> resetPassword(@RequestBody @Valid ResetPasswordRequest request,@PathVariable Integer userId) throws MessagingException{
+        service.resetPassword(userId, request);
+        return ResponseEntity.ok().build();
     }
 }

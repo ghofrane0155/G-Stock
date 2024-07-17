@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -131,6 +130,22 @@ public class AuthenticationService {
 
         savedToken.setValidatedAt(LocalDateTime.now());
         tokenRepository.save(savedToken);
+    }
+
+    //reset password
+    public void resetPassword(Integer userId, ResetPasswordRequest request) throws MessagingException{
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // Validate old password
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Incorrect old password");
+        }
+
+        // Set new password
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        // Save updated user
+        userRepository.save(user);
     }
 
 }
