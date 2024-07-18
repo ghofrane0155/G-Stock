@@ -25,9 +25,7 @@ public class AuthenticationController {
 
     //login
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody @Valid AuthenticationRequest request
-    ) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody @Valid AuthenticationRequest request) {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
@@ -39,8 +37,16 @@ public class AuthenticationController {
 
     //reset password
     @PatchMapping("/resetpass/{userId}")
-    public ResponseEntity<?> resetPassword(@RequestBody @Valid ResetPasswordRequest request,@PathVariable Integer userId) throws MessagingException{
+    public ResponseEntity<?> resetPassword(@RequestBody @Valid ResetPasswordRequest request,@PathVariable Integer userId){
         service.resetPassword(userId, request);
         return ResponseEntity.ok().build();
     }
+
+    //logOut
+    @PostMapping("/logout/{userId}")
+    public ResponseEntity<?> logOut(@PathVariable Integer userId) {
+        service.updateLoggedOutStatus(userId,true);
+        return ResponseEntity.ok().build();
+    }
+
 }

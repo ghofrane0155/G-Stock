@@ -5,10 +5,9 @@ package tn.esprit.stock.auth;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.stock.email.EmailService;
 import tn.esprit.stock.email.EmailTemplateName;
-import tn.esprit.stock.role.IRoleRepository;
+import tn.esprit.stock.user.IRoleRepository;
 import tn.esprit.stock.security.JwtService;
 import tn.esprit.stock.user.ITokenRepository;
 import tn.esprit.stock.user.IUserRepository;
@@ -25,6 +24,7 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +58,7 @@ public class AuthenticationService {
         userRepository.save(user);
         sendValidationEmail(user);
     }
+
     private void sendValidationEmail(User user) throws MessagingException {
         var newToken = generateAndSaveActivationToken(user);
         //send email
@@ -70,6 +71,8 @@ public class AuthenticationService {
                 "Account activation"
         );
     }
+
+    // Generate a 6-digit validation code
     private String generateAndSaveActivationToken(User user) {
         // Generate a token
         String generatedToken = generateActivationCode(6);
@@ -77,6 +80,7 @@ public class AuthenticationService {
                 .token(generatedToken)
                 .createdAt(LocalDateTime.now())
                 .expiresAt(LocalDateTime.now().plusMinutes(15))
+                .loggedOut(true) // Initially set to false
                 .user(user)
                 .build();
         tokenRepository.save(token);
@@ -97,7 +101,7 @@ public class AuthenticationService {
         return codeBuilder.toString();
     }
 
-    //login
+    //login and return JWT token
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -109,7 +113,13 @@ public class AuthenticationService {
         claims.put("fullName", user.getFullName());
 
         var jwtToken = jwtService.generateToken(claims, (User) auth.getPrincipal());
-        return AuthenticationResponse.builder().token(jwtToken).build();
+
+        // Update loggedOut status to false after successful login
+        updateLoggedOutStatus(user.getId(), false);
+
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 
     //activateAccount
@@ -133,7 +143,7 @@ public class AuthenticationService {
     }
 
     //reset password
-    public void resetPassword(Integer userId, ResetPasswordRequest request) throws MessagingException{
+    public void resetPassword(Integer userId, ResetPasswordRequest request) {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
@@ -144,8 +154,19 @@ public class AuthenticationService {
 
         // Set new password
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-        // Save updated user
         userRepository.save(user);
+
+        // Update loggedOut status to true after resetting password
+        updateLoggedOutStatus(userId, true);
     }
+    // Update loggedOut status of tokens associated with the user
+    public void updateLoggedOutStatus(Integer userId, boolean loggedOut) {
+        List<Token> tokens = tokenRepository.findByUserId(userId);
+        tokens.forEach(token -> {
+            token.setLoggedOut(loggedOut);
+            tokenRepository.save(token);
+        });
+    }
+
 
 }

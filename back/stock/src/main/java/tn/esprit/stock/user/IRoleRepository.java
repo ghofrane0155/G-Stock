@@ -1,4 +1,4 @@
-package tn.esprit.stock.role;
+package tn.esprit.stock.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

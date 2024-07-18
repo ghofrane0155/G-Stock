@@ -1,4 +1,4 @@
-package tn.esprit.stock.role;
+package tn.esprit.stock.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
