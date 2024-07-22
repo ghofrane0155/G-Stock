@@ -7,12 +7,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import tn.esprit.stock.email.EmailService;
 import tn.esprit.stock.email.EmailTemplateName;
-import tn.esprit.stock.user.IRoleRepository;
+import tn.esprit.stock.repository.IRoleRepository;
 import tn.esprit.stock.security.JwtService;
-import tn.esprit.stock.user.ITokenRepository;
-import tn.esprit.stock.user.IUserRepository;
-import tn.esprit.stock.user.Token;
-import tn.esprit.stock.user.User;
+import tn.esprit.stock.repository.ITokenRepository;
+import tn.esprit.stock.repository.IUserRepository;
+import tn.esprit.stock.entities.Token;
+import tn.esprit.stock.entities.User;
 
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,6 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

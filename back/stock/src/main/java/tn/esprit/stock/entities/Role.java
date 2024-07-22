@@ -1,4 +1,4 @@
-package tn.esprit.stock.user;
+package tn.esprit.stock.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -6,7 +6,6 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import tn.esprit.stock.user.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
