@@ -23,4 +23,26 @@ public class Produit {
 
     @OneToMany
     private List<Categorie> listCategorie;
+
+
+
+    @PrePersist
+    private void prePersist() {
+        if (codeAB == null || codeAB.isEmpty()) {
+            codeAB = generateBarCode();
+        }
+    }
+
+    private String generateBarCode() {
+        // Generate barcode logic
+        return "GeneratedBarCodeValue";
+    }
+
+
+
 }
+
+
+
+
+
