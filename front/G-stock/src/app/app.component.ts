@@ -18,6 +18,6 @@ export class AppComponent {
   }
 
   isLoginRoute(): boolean {
-    return this.currentRoute === '/login' || this.currentRoute === '/register';
+    return this.currentRoute === '/login' || this.currentRoute === '/register' || this.currentRoute ==='/activate-account';
   }
 }

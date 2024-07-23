@@ -14,6 +14,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
+import { CodeInputModule } from 'angular-code-input';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { RegisterComponent } from './components/register/register.component';
     ViewProfileComponent,
     DashboardComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ActivateAccountComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,9 @@ import { RegisterComponent } from './components/register/register.component';
     FormsModule,
     RouterModule,
     RouterOutlet,
-    HttpClientModule
+    HttpClientModule,
+    CodeInputModule
+
   ],
   providers: [
     HttpClient

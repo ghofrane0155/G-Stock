@@ -6,10 +6,12 @@ import { AccountSettingsComponent } from './components/account-settings/account-
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'activate-account',component: ActivateAccountComponent},
   { path: 'dashboard', component: DashboardComponent },
   { path: 'sidebar', component: SidebarComponent },
   { path: 'view-profile', component: ViewProfileComponent },
