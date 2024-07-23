@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../services/services';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  authRequest: RegistrationRequest = { firstname: '', lastname: '', email: '', password: '' };
+  registerRequest: RegistrationRequest = {email: '', firstname: '', lastname: '', password: ''};
   errorMsg: Array<string> = [];
 
   constructor(
@@ -19,7 +19,17 @@ export class RegisterComponent {
 
   register() {
     this.errorMsg = [];
-   
+    this.authService.register({
+      body: this.registerRequest
+    })
+      .subscribe({
+        next: () => {
+          this.router.navigate(['activate-account']);
+        },
+        error: (err) => {
+          this.errorMsg = err.error.validationErrors;
+        }
+      });
   }
 
   login() {
