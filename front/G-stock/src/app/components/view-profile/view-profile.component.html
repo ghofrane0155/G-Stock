@@ -1,0 +1,54 @@
+<div class="container my-5">
+    <div class="row">
+      <!-- Profile Picture -->
+      <div class="col-md-4 text-center">
+        <img
+          src="../../../assets/img/profile.jpg"
+          alt="Profile Picture"
+          class="img-fluid rounded-circle"
+          style="width: 150px; height: 150px;"
+        />
+        <div class="mt-3">
+          <button class="btn btn-primary btn-sm" (click)="changePhoto()">Change Photo</button>
+        </div>
+      </div>
+      
+      <!-- Profile Info -->
+      <div class="col-md-8">
+        <h1 class="display-4">John Doe</h1>
+        <p class="lead">Software Engineer</p>
+        <hr class="my-4">
+        
+        <h5>Contact Information</h5>
+        <form #profileForm="ngForm">
+          <ul class="list-unstyled">
+            <li>
+              <label for="email">Email Address</label>
+              <input type="email" class="form-control" id="email" [(ngModel)]="user.email" name="email" [disabled]="!isEditing">
+            </li>
+            <li>
+              <label for="phone">Phone</label>
+              <input type="text" class="form-control" id="phone" [(ngModel)]="user.phone" name="phone" [disabled]="!isEditing">
+            </li>
+            <li>
+              <label for="address">Address</label>
+              <input type="text" class="form-control" id="address" [(ngModel)]="user.address" name="address" [disabled]="!isEditing">
+            </li>
+            <li>
+              <label for="dateOfBirth">Date of Birth</label>
+              <input type="date" class="form-control" id="dateOfBirth" [(ngModel)]="user.dateOfBirth" name="dateOfBirth" [disabled]="!isEditing">
+            </li>
+          </ul>
+          
+          <hr class="my-4">
+          
+          <button type="button" class="btn btn-primary" (click)="toggleEdit()">
+            {{ isEditing ? 'Save Changes' : 'Edit Profile' }}
+          </button>
+          <button *ngIf="isEditing" type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+          <a routerLink="/account-settings" class="btn btn-link">Change Password</a>
+        </form>
+      </div>
+    </div>
+  </div>
+  
