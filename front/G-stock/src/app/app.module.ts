@@ -11,6 +11,8 @@ import { ViewProfileComponent } from './components/view-profile/view-profile.com
 import { FormsModule } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { HttpClient, HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -20,17 +22,19 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     NavbarComponent,
     SidebarComponent,
     ViewProfileComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     RouterModule,
-    RouterOutlet
+    RouterOutlet,
+    HttpClientModule
   ],
   providers: [
-    provideClientHydration()
+    HttpClient
   ],
   bootstrap: [AppComponent]
 })
