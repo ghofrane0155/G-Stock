@@ -330,22 +330,22 @@
                     "fullName": {
                         "type": "string"
                     },
-                    "username": {
-                        "type": "string"
-                    },
                     "authorities": {
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/GrantedAuthority"
                         }
                     },
+                    "username": {
+                        "type": "string"
+                    },
+                    "accountNonLocked": {
+                        "type": "boolean"
+                    },
                     "accountNonExpired": {
                         "type": "boolean"
                     },
                     "credentialsNonExpired": {
-                        "type": "boolean"
-                    },
-                    "accountNonLocked": {
                         "type": "boolean"
                     }
                 }
@@ -397,6 +397,9 @@
                 "properties": {
                     "token": {
                         "type": "string"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
                     }
                 }
             },

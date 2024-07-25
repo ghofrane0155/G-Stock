@@ -6,24 +6,29 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './view-profile.component.scss'
 })
 export class ViewProfileComponent implements OnInit {
-  isEditing = false;
-  user = {
-    email: 'john.doe@example.com',
-    phone: '+1234567890',
-    address: '1234 Main St, Anytown, USA',
-    dateOfBirth: '1990-01-01',
-    oldPassword: '',
-    newPassword: ''
-  };
+  isEditing = false;  
+  currentUser: any = {}; 
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    const userJson = localStorage.getItem('user');
+    if (userJson) {
+      try {
+        this.currentUser = JSON.parse(userJson);
+        console.log('currentUser:', this.currentUser);
+      } catch (error) {
+        console.error('Failed to parse user data from local storage:', error);
+      }
+    } else {
+      console.error('No user data found in local storage');
+    }
+  }
 
   toggleEdit(): void {
     if (this.isEditing) {
       // Logic to save changes
-      console.log('Saving changes:', this.user);
+      console.log('Saving changes:', this.currentUser);
     }
     this.isEditing = !this.isEditing;
   }

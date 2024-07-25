@@ -15,7 +15,7 @@
       
       <!-- Profile Info -->
       <div class="col-md-8">
-        <h1 class="display-4">John Doe</h1>
+        <h1 class="display-4">{{ (currentUser.firstname | titlecase) }} {{ (currentUser.lastname | titlecase) }}</h1>
         <p class="lead">Software Engineer</p>
         <hr class="my-4">
         
@@ -24,19 +24,19 @@
           <ul class="list-unstyled">
             <li>
               <label for="email">Email Address</label>
-              <input type="email" class="form-control" id="email" [(ngModel)]="user.email" name="email" [disabled]="!isEditing">
+              <input type="email" class="form-control" id="email" [(ngModel)]="currentUser.email" name="email" [disabled]="!isEditing">
             </li>
             <li>
               <label for="phone">Phone</label>
-              <input type="text" class="form-control" id="phone" [(ngModel)]="user.phone" name="phone" [disabled]="!isEditing">
+              <input type="text" class="form-control" id="phone" [(ngModel)]="currentUser.phone" name="phone" [disabled]="!isEditing">
             </li>
             <li>
               <label for="address">Address</label>
-              <input type="text" class="form-control" id="address" [(ngModel)]="user.address" name="address" [disabled]="!isEditing">
+              <input type="text" class="form-control" id="address" [(ngModel)]="currentUser.address" name="address" [disabled]="!isEditing">
             </li>
             <li>
               <label for="dateOfBirth">Date of Birth</label>
-              <input type="date" class="form-control" id="dateOfBirth" [(ngModel)]="user.dateOfBirth" name="dateOfBirth" [disabled]="!isEditing">
+              <input type="date" class="form-control" id="dateOfBirth" [(ngModel)]="currentUser.dateOfBirth" name="dateOfBirth" [disabled]="!isEditing">
             </li>
           </ul>
           

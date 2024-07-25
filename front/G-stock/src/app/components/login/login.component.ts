@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import {Router} from '@angular/router';
-import { AuthenticationRequest } from '../../services/models';
+import { AuthenticationRequest, User } from '../../services/models';
 import { AuthenticationService } from '../../services/services';
 import { TokenService } from '../../services/token/token.service';
 
@@ -27,15 +27,15 @@ export class LoginComponent {
       body: this.authRequest
     }).subscribe({
       next: (res) => {
-        // Check if the response is a Blob and handle accordingly
         if (res instanceof Blob) {
           const reader = new FileReader();
           reader.onload = () => {
             const responseText = reader.result as string;
             const jsonResponse = JSON.parse(responseText);
-            console.log('Parsed JSON response:', jsonResponse); // Log the parsed JSON response
+           
             this.tokenService.token = jsonResponse.token as string;
-            console.log('Token set:', this.tokenService.token); // Log the token after setting it
+            localStorage.setItem('user', JSON.stringify(jsonResponse.user));
+
             if (this.tokenService.token) {
               this.router.navigate(['dashboard']);
             } else {
