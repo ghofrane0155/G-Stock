@@ -1,8 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface RegistrationRequest {
-  email: string;
   firstname: string;
   lastname: string;
+  email: string;
   password: string;
+  phone: string;
+  dateOfBirth: string;
 }

@@ -298,6 +298,9 @@
                         "type": "string",
                         "format": "date"
                     },
+                    "phone": {
+                        "type": "string"
+                    },
                     "email": {
                         "type": "string"
                     },
@@ -330,32 +333,34 @@
                     "fullName": {
                         "type": "string"
                     },
+                    "username": {
+                        "type": "string"
+                    },
                     "authorities": {
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/GrantedAuthority"
                         }
                     },
-                    "username": {
-                        "type": "string"
-                    },
-                    "accountNonLocked": {
-                        "type": "boolean"
-                    },
                     "accountNonExpired": {
                         "type": "boolean"
                     },
                     "credentialsNonExpired": {
+                        "type": "boolean"
+                    },
+                    "accountNonLocked": {
                         "type": "boolean"
                     }
                 }
             },
             "RegistrationRequest": {
                 "required": [
+                    "dateOfBirth",
                     "email",
                     "firstname",
                     "lastname",
-                    "password"
+                    "password",
+                    "phone"
                 ],
                 "type": "object",
                 "properties": {
@@ -372,6 +377,14 @@
                         "maxLength": 2147483647,
                         "minLength": 8,
                         "type": "string"
+                    },
+                    "phone": {
+                        "pattern": "^\\d{8}$",
+                        "type": "string"
+                    },
+                    "dateOfBirth": {
+                        "type": "string",
+                        "format": "date"
                     }
                 }
             },

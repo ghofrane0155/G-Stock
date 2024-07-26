@@ -19,6 +19,7 @@ export interface User {
   lastname?: string;
   name?: string;
   password?: string;
+  phone?: string;
   roles?: Array<Role>;
   username?: string;
 }

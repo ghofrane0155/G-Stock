@@ -8,7 +8,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ViewProfileComponent } from './components/view-profile/view-profile.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -37,7 +37,8 @@ import { CodeInputModule } from 'angular-code-input';
     RouterModule,
     RouterOutlet,
     HttpClientModule,
-    CodeInputModule
+    CodeInputModule,
+    ReactiveFormsModule,
 
   ],
   providers: [
