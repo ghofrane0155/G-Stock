@@ -29,9 +29,12 @@ public class User implements UserDetails, Principal {
     @Id
     @GeneratedValue
     private Integer id;
+
     private String firstname;
     private String lastname;
     private LocalDate dateOfBirth;
+    private String phone; // Add phone
+
     @Column(unique=true)
     private String email;
     private String password;

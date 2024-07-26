@@ -1,12 +1,11 @@
 package tn.esprit.stock.auth;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -26,4 +25,11 @@ public class RegistrationRequest {
     @NotNull(message = "Password is mandatory")
     @Size(min = 8, message = "Password should be 8 characters long minimum")
     private String password;
+
+    @NotEmpty(message = "Phone number is mandatory")
+    @NotNull(message = "Phone number is mandatory")
+    @Pattern(regexp = "^\\d{8}$", message = "Phone number must be 8 digits long and contain only numbers")
+    private String phone;
+    @NotNull(message = "Date of birth is mandatory")
+    private LocalDate dateOfBirth;
 }
