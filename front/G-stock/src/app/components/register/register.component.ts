@@ -6,7 +6,7 @@ import { AuthenticationService } from '../../services/services';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrls: ['./register.component.scss'] // Corrected 'styleUrl' to 'styleUrls'
 })
 export class RegisterComponent {
   registerRequest: RegistrationRequest = {
@@ -28,40 +28,25 @@ export class RegisterComponent {
     this.errorMsg = '';
     this.errorMsgs = [];
     this.currentErrorIndex = 0;
-    this.authService.register({body: this.registerRequest})
+    this.authService.register({ body: this.registerRequest })
       .subscribe({
-        next: (res) => {
+        next: () => {
           this.router.navigate(['activate-account']);
         },
         error: (err) => {
           console.log('Error:', err); // Log the entire error object
-          if (err.error instanceof Blob) {
-            const reader = new FileReader();
-            reader.onload = () => {
-              const errorText = reader.result as string;
-              try {
-                const errorJson = JSON.parse(errorText);
-                if (errorJson.validationErrors) {
-                  this.errorMsgs = errorJson.validationErrors;
-                  this.displayNextError();
-                } else {
-                  this.errorMsg = errorJson.error;
-                }
-              } catch (e) {
-                this.errorMsg = 'An unknown error occurred.';
-              }
-              this.cdr.detectChanges(); // Trigger change detection manually
-            };
-            reader.readAsText(err.error);
-          } else {
-            if (err.error.validationErrors) {
-              this.errorMsgs = err.error.validationErrors;
+          if (err.error && typeof err.error === 'object') {
+            const errorJson = err.error;
+            if (errorJson.validationErrors) {
+              this.errorMsgs = errorJson.validationErrors;
               this.displayNextError();
             } else {
-              this.errorMsg = err.error.error;
+              this.errorMsg = errorJson.error || 'An unknown error occurred.';
             }
-            this.cdr.detectChanges(); // Trigger change detection manually
+          } else {
+            this.errorMsg = 'An unknown error occurred.';
           }
+          this.cdr.detectChanges(); // Trigger change detection manually
         }
       });
   }

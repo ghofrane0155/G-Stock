@@ -88,22 +88,12 @@ export class AuthenticationService extends BaseService {
   /** Path part for operation `authenticate()` */
   static readonly AuthenticatePath = '/auth/authenticate';
 
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `authenticate()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
+ 
   authenticate$Response(params: Authenticate$Params, context?: HttpContext): Observable<StrictHttpResponse<AuthenticationResponse>> {
     return authenticate(this.http, this.rootUrl, params, context);
   }
 
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `authenticate$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
+  
   authenticate(params: Authenticate$Params, context?: HttpContext): Observable<AuthenticationResponse> {
     return this.authenticate$Response(params, context).pipe(
       map((r: StrictHttpResponse<AuthenticationResponse>): AuthenticationResponse => r.body)
@@ -112,34 +102,16 @@ export class AuthenticationService extends BaseService {
 
   /** Path part for operation `resetPassword()` */
   static readonly ResetPasswordPath = '/auth/resetpass/{userId}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `resetPassword()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  resetPassword$Response(params: ResetPassword$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-}>> {
+  resetPassword$Response(params: ResetPassword$Params, context?: HttpContext): Observable<StrictHttpResponse<{}>> {
     return resetPassword(this.http, this.rootUrl, params, context);
   }
 
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `resetPassword$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  resetPassword(params: ResetPassword$Params, context?: HttpContext): Observable<{
-}> {
+  resetPassword(params: ResetPassword$Params, context?: HttpContext): Observable<{}> {
     return this.resetPassword$Response(params, context).pipe(
-      map((r: StrictHttpResponse<{
-}>): {
-} => r.body)
+      map((r: StrictHttpResponse<{}>): {} => r.body)
     );
   }
 
-  /** Path part for operation `confirm()` */
   static readonly ConfirmPath = '/auth/activate-account';
 
   /**
