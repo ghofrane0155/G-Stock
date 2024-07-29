@@ -333,9 +333,6 @@
                     "fullName": {
                         "type": "string"
                     },
-                    "username": {
-                        "type": "string"
-                    },
                     "authorities": {
                         "type": "array",
                         "items": {
@@ -344,6 +341,9 @@
                     },
                     "accountNonExpired": {
                         "type": "boolean"
+                    },
+                    "username": {
+                        "type": "string"
                     },
                     "credentialsNonExpired": {
                         "type": "boolean"

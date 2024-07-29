@@ -1,0 +1,58 @@
+<div class="container my-5">
+  <div class="row">
+    <!-- Profile Picture -->
+    <div class="col-md-4 text-center">
+      <img
+        src="../../../assets/img/profile.jpg"
+        alt="Profile Picture"
+        class="img-fluid rounded-circle"
+        style="width: 150px; height: 150px;"
+      />
+      <div class="mt-3">
+        <!-- Hidden file input -->
+        <input type="file" id="fileInput" style="display: none;" />
+        <!-- Change Photo button -->
+        <button class="btn btn-primary btn-sm" onclick="document.getElementById('fileInput').click()">Change Photo</button>
+      </div>
+    </div>
+
+    <!-- Profile Info -->
+    <div class="col-md-8">
+      <h1 class="display-4">First Name Last Name</h1>
+      <p class="lead">Software Engineer Role</p>
+      <hr class="my-4">
+
+      <h5>Contact Information</h5>
+      <form>
+        <ul class="list-unstyled">
+          <li>
+            <label for="firstname">First name</label>
+            <input type="text" class="form-control" id="firstname" disabled>
+          </li>
+          <li>
+            <label for="lastname">Last name</label>
+            <input type="text" class="form-control" id="lastname" disabled>
+          </li>
+          <li>
+            <label for="email">Email Address</label>
+            <input type="email" class="form-control" id="email" disabled>
+          </li>
+          <li>
+            <label for="phone">Phone</label>
+            <input type="text" class="form-control" id="phone" disabled>
+          </li>
+          <li>
+            <label for="dateOfBirth">Date of Birth</label>
+            <input type="date" class="form-control" id="dateOfBirth" disabled>
+          </li>
+        </ul>
+
+        <hr class="my-4">
+
+        <button type="button" class="btn btn-primary">Edit Profile</button>
+        <button type="button" class="btn btn-secondary" style="display: none;">Cancel</button>
+        <a href="/account-settings" class="btn btn-link">Change Password</a>
+      </form>
+    </div>
+  </div>
+</div>
