@@ -11,7 +11,7 @@ import { ViewProfileComponent } from './components/view-profile/view-profile.com
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
@@ -41,9 +41,7 @@ import { CodeInputModule } from 'angular-code-input';
     ReactiveFormsModule,
 
   ],
-  providers: [
-    HttpClient
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

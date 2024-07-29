@@ -7,6 +7,17 @@ import { Router } from 'express';
   templateUrl: './view-profile.component.html',
   styleUrl: './view-profile.component.scss'
 })
-export class ViewProfileComponent {
-  
+export class ViewProfileComponent implements OnInit {
+  currentUser: any = {};
+
+  ngOnInit() {
+    this.loadCurrentUser();
+  }
+
+  loadCurrentUser() {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      this.currentUser = JSON.parse(userData);
+    }
+  }
 }
