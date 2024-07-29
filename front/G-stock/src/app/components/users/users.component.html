@@ -21,50 +21,49 @@
         <div class="card">
           <div class="card-header">
             <h4 class="card-title">List Users</h4>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search by name or email"
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="filterUsers()"
+            />
           </div>
           <div class="card-body">
             <div class="table-responsive">
-              <table
-                id="basic-datatables"
-                class="display table table-striped table-hover"
-              >
+              <table id="basic-datatables" class="display table table-striped table-hover">
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Age</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
+                    <th>Email</th>
+                    <th>Date of Birth</th>
+                    <th>Phone</th>
+                    <th>Account Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Tiger Nixon</td>
-                    <td>System Architect</td>
-                    <td>Edinburgh</td>
-                    <td>61</td>
-                    <td>2011/04/25</td>
-                    <td>$320,800</td>
+                  <tr *ngFor="let user of paginatedUsers">
+                    <td>{{ user.firstname }} {{ user.lastname }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.dateOfBirth }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.accountLocked ? 'Locked' : 'Active' }}</td>
                   </tr>
-                  <tr>
-                    <td>Garrett Winters</td>
-                    <td>Accountant</td>
-                    <td>Tokyo</td>
-                    <td>63</td>
-                    <td>2011/07/25</td>
-                    <td>$170,750</td>
-                  </tr>
-                  <tr>
-                    <td>Ashton Cox</td>
-                    <td>Junior Technical Author</td>
-                    <td>San Francisco</td>
-                    <td>66</td>
-                    <td>2009/01/12</td>
-                    <td>$86,000</td>
-                  </tr>              
                 </tbody>
               </table>
+            </div>
+            <div class="pagination mt-3">
+              <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+                </li>
+                <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index">
+                  <a class="page-link" [class.active]="isActivePage(i + 1)" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
