@@ -16,6 +16,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
 import { CodeInputModule } from 'angular-code-input';
+import { UsersComponent } from './components/users/users.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { CodeInputModule } from 'angular-code-input';
     DashboardComponent,
     LoginComponent,
     RegisterComponent,
-    ActivateAccountComponent
+    ActivateAccountComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
