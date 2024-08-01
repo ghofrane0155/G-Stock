@@ -1,0 +1,46 @@
+package tn.esprit.stock.entities;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.List;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Produit {
+    @Id
+    @GeneratedValue
+    private Long idProduit;
+    private String nomProduit;
+    private String description;
+    private double prixUnitaire;
+    private String codeAB;
+    private String logo;
+
+    @ManyToOne
+    private Categorie categorie;
+
+    @PrePersist
+    private void prePersist() {
+        if (codeAB == null || codeAB.isEmpty()) {
+            codeAB = generateBarCode();
+        }
+    }
+
+    private String generateBarCode() {
+        // Generate barcode logic
+        return "GeneratedBarCodeValue";
+    }
+
+
+
+}
+
+
+
+
+
