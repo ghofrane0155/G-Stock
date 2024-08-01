@@ -1,16 +1,16 @@
 package tn.esprit.stock.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Produit {
     @Id
     @GeneratedValue
@@ -21,6 +21,26 @@ public class Produit {
     private String codeAB;
     private String logo;
 
-    @OneToMany
-    private List<Categorie> listCategorie;
+    @ManyToOne
+    private Categorie categorie;
+
+    @PrePersist
+    private void prePersist() {
+        if (codeAB == null || codeAB.isEmpty()) {
+            codeAB = generateBarCode();
+        }
+    }
+
+    private String generateBarCode() {
+        // Generate barcode logic
+        return "GeneratedBarCodeValue";
+    }
+
+
+
 }
+
+
+
+
+

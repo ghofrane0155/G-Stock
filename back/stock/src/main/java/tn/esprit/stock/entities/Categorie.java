@@ -1,9 +1,12 @@
 package tn.esprit.stock.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,7 +18,7 @@ public class Categorie {
     private Long idCategorie;
     private String nomCategorie;
 
-    @ManyToOne
-    private Produit produit;
-
+    @OneToMany(mappedBy = "categorie")
+    @JsonIgnore
+    private List<Produit> produits; // Une catégorie peut avoir plusieurs produits.
 }

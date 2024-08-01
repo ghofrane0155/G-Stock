@@ -1,0 +1,30 @@
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card">
+        <div class="card-header">
+          <h4>Account Settings</h4>
+        </div>
+        <div class="card-body">
+          <form #passwordForm="ngForm" (ngSubmit)="resetPassword(passwordForm)">
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+            <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+            <div class="form-group">
+              <label for="oldPassword">Old Password</label>
+              <input type="password" class="form-control" id="oldPassword" [(ngModel)]="password.oldPassword" name="oldPassword" required>
+            </div>
+            <div class="form-group">
+              <label for="newPassword">New Password</label>
+              <input type="password" class="form-control" id="newPassword" [(ngModel)]="password.newPassword" name="newPassword" required>
+            </div>
+            <div class="form-group">
+              <label for="confirmNewPassword">Confirm New Password</label>
+              <input type="password" class="form-control" id="confirmNewPassword" [(ngModel)]="password.confirmNewPassword" name="confirmNewPassword" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Reset Password</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface IGestionCategorie {
     List<Categorie> retrieveAllCategories();
+    Categorie addCategorie(Categorie categorie);
+    Categorie updateCategorie(Categorie categorie);
+    void deleteCategorie(Long idCategorie);
 }
