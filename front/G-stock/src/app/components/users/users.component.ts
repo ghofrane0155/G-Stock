@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../services/models';
-import { UserControllerService } from '../../services/services';
+import { User } from '../../models/user';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-users',
@@ -16,14 +16,14 @@ export class UsersComponent implements OnInit {
   itemsPerPage: number = 10;
   totalPages: number = 0;
 
-  constructor(private userService: UserControllerService) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.loadUsers();
   }
 
   loadUsers(): void {
-    this.userService.findAll().subscribe({
+    this.userService.getAllUsers().subscribe({
       next: (users: User[]) => {
         this.users = users;
         this.filteredUsers = users;

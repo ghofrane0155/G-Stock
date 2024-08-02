@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { AuthenticationService } from '../../services/services';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-account-settings',
@@ -17,10 +17,11 @@ export class AccountSettingsComponent {
   errorMessage: string = '';
   successMessage: string = '';
 
-  constructor(private authService: AuthenticationService,
+  constructor(
+    private authService: AuthenticationService,
     private router: Router, // Inject Router
-    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef) 
-    ) { }
+    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
+  ) {}
 
   resetPassword(form: NgForm): void {
     if (form.invalid) {
@@ -34,26 +35,23 @@ export class AccountSettingsComponent {
     }
 
     // Retrieve userId from localStorage or another source
-    const userId = JSON.parse(localStorage.getItem('user') || '{}').id;
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const userId = user.id;
 
     if (userId) {
-      const params = {
-        userId: userId,
-        body: {
-          currentPassword: this.password.oldPassword,
-          newPassword: this.password.newPassword
-        }
-      };
-      this.authService.resetPassword(params).subscribe(
+      this.authService.resetPassword(userId, {
+        currentPassword: this.password.oldPassword,
+        newPassword: this.password.newPassword
+      }).subscribe(
         () => {
           this.successMessage = 'Password reset successfully';
           this.errorMessage = '';
           localStorage.removeItem('user');
           this.router.navigate(['login']);
-          form.reset();  // Reset form after successful submission
+          form.reset(); // Reset form after successful submission
         },
-        (error: any) => {
-          this.errorMessage = 'Old Password is incorrect';
+        (error) => {
+          this.errorMessage = 'Old password is incorrect or another error occurred.';
           this.successMessage = '';
           console.error('Error resetting password', error);
         }
