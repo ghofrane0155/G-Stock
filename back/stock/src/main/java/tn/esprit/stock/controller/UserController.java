@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 //@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController {
     @Autowired
     IGestionUser iGestionUser;
@@ -45,7 +46,6 @@ public class UserController {
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         try {
-
             User updatedUser = iGestionUser.update(user);
             return ResponseEntity.ok(updatedUser);
         } catch (Exception e) {
