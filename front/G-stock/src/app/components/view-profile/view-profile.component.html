@@ -18,7 +18,11 @@
     <!-- Profile Info View Mode -->
     <div class="col-md-8" *ngIf="!isEditing">
       <h1 class="display-4">{{ currentUser.firstname }} {{ currentUser.lastname }}</h1>
-      <p class="lead">User</p>
+      <p class="lead">Roles: 
+        <span *ngFor="let role of currentUser.roles; let last = last">
+          {{ role.name }}<span *ngIf="!last">, </span>
+        </span>
+      </p>
       <hr class="my-4">
 
       <h5>Contact Information</h5>

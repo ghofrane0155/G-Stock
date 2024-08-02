@@ -14,7 +14,8 @@ export class ViewProfileComponent implements OnInit {
   originalUser: User = {} as User;
   isEditing = false;
   errorMessage: string | null = null;
-
+  
+  
   constructor(
     private userService: UserService, // Adjusted service name
     @Inject(PLATFORM_ID) private platformId: Object
