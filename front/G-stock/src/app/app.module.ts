@@ -17,6 +17,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
 import { CodeInputModule } from 'angular-code-input';
 import { UsersComponent } from './components/users/users.component';
+import { ProduitComponent } from './components/produit/produit.component';
+import { CategoryComponent } from './components/category/category.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { UsersComponent } from './components/users/users.component';
     LoginComponent,
     RegisterComponent,
     ActivateAccountComponent,
-    UsersComponent
+    UsersComponent,
+    ProduitComponent,
+    CategoryComponent
   ],
   imports: [
     BrowserModule,

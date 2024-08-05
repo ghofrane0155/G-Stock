@@ -7,3 +7,5 @@ export { RegistrationRequest } from './models/registration-request';
 export { ResetPasswordRequest } from './models/reset-password-request';
 export { Role } from './models/role';
 export { User } from './models/user';
+export { Produit } from './models/produit';
+export { Category} from './models/category';

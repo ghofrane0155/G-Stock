@@ -6,6 +6,8 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { UserControllerService } from './services/user-controller.service';
 import { AuthenticationService } from './services/authentication.service';
+import { ProduitService} from './services/produit.service'
+import { CategorieService } from './services/category.service';
 
 /**
  * Module that provides all services and configuration.
@@ -17,6 +19,8 @@ import { AuthenticationService } from './services/authentication.service';
   providers: [
     UserControllerService,
     AuthenticationService,
+    ProduitService,
+    CategorieService,
     ApiConfiguration
   ],
 })
