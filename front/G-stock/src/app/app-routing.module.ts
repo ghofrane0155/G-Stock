@@ -8,6 +8,8 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
 import { UsersComponent } from './components/users/users.component';
+import { ClientsComponent } from './components/clients/clients.component';
+import { FournisseursComponent } from './components/fournisseurs/fournisseurs.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -17,6 +19,9 @@ const routes: Routes = [
   { path: 'account-settings', component: AccountSettingsComponent },
 
   { path: 'users', component: UsersComponent },
+  { path: 'clients', component: ClientsComponent },
+  { path: 'fournisseurs', component: FournisseursComponent },
+
 
   { path: 'dashboard', component: DashboardComponent },
   { path: 'sidebar', component: SidebarComponent },

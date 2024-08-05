@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-users',
@@ -67,7 +68,41 @@ export class UsersComponent implements OnInit {
     return this.currentPage === page;
   }
 
-  formatRoles(roles: Array<{ name?: string }>): string {
-    return roles?.map(role => role.name).join(', ') || 'No roles';
+  deleteUser(userId: number | undefined): void {
+    if (userId !== undefined) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.userService.deleteUser(userId).subscribe({
+            next: () => {
+              Swal.fire(
+                'Deleted!',
+                'User has been deleted.',
+                'success'
+              );
+              this.users = this.users.filter(user => user.id !== userId);
+              this.filterUsers();
+            },
+            error: (err) => {
+              Swal.fire(
+                'Error!',
+                'Failed to delete user.',
+                'error'
+              );
+              console.error('Failed to delete user', err);
+            }
+          });
+        }
+      });
+    }
   }
+
+  
 }

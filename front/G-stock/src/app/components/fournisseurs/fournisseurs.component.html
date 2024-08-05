@@ -1,0 +1,92 @@
+<div class="container">
+    <div class="page-inner">
+      <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+              <div>
+                <div class="page-header">
+                  <h3 class="fw-bold mb-3">Management</h3>
+                  <ul class="breadcrumbs mb-3">
+                    <li class="nav-home">
+                      <a routerLink="/dashboard">
+                        <i class="icon-home"></i>
+                      </a>
+                    </li>
+                    <li class="separator">
+                      <i class="icon-arrow-right"></i>
+                    </li>
+                    <li class="nav-item">
+                      <a routerLink="/fournisseurs">Fournisseurs</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="ms-md-auto py-2 py-md-0">
+                <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
+                <a href="#" class="btn btn-primary btn-round">Add Fournisseur</a>
+              </div>
+      </div>
+
+      
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">List Fournisseurs</h4>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search by name or email"
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="filterFournisseurs()"
+              />
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table id="basic-datatables" class="display table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th>Matricule Fiscale</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Address</th>
+                      <th>Phone</th>
+                      <th>Fax</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let fournisseur of paginatedFournisseurs">
+                      <td>{{ fournisseur.matriculeFiscale }}</td>
+                      <td>{{ fournisseur.nomFournisseur }}</td>
+                      <td>{{ fournisseur.mail }}</td>
+                      <td>{{ fournisseur.adresseFournisseur }}</td>
+                      <td>{{ fournisseur.phone }}</td>
+                      <td>{{ fournisseur.fax ? fournisseur.fax : '--' }}</td>
+                      <td>
+                        <button class="btn btn-danger btn-sm" (click)="deleteFournisseur(fournisseur.id)">
+                          <i class="icon-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination mt-3">
+                <ul class="pagination">
+                  <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+                  </li>
+                  <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index">
+                    <a class="page-link" [class.active]="isActivePage(i + 1)" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+                  </li>
+                  <li class="page-item" [class.disabled]="currentPage === totalPages">
+                    <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

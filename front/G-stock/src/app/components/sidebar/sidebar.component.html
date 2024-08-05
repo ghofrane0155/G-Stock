@@ -40,12 +40,34 @@
           </div>
         </li>
 
-        <li class="nav-item">
-          <a routerLink="/users" class="collapsed" aria-expanded="false">
+        <li class="nav-item active">
+          <a data-bs-toggle="collapse" href="#users" class="collapsed" aria-expanded="false">
             <i class="fas fa-user"></i>
             <p>User Management</p>
+            <span class="caret"></span>
           </a>
+          <div class="collapse" id="users">
+            <ul class="nav nav-collapse">
+              <li>
+                <a href="/users">
+                  <span class="sub-item">Users</span>
+                </a>
+              </li>
+              <li>
+                <a href="/clients">
+                  <span class="sub-item">Clients</span>
+                </a>
+              </li>
+              <li>
+                <a href="/fournisseurs">
+                  <span class="sub-item">Fournisseurs</span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </li>
+
+       
 
         <!-- Settings Section -->
         <li class="nav-section">

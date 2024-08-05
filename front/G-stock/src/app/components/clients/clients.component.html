@@ -1,32 +1,41 @@
 <div class="container">
   <div class="page-inner">
-    <div class="page-header">
-      <h3 class="fw-bold mb-3">Management</h3>
-      <ul class="breadcrumbs mb-3">
-        <li class="nav-home">
-          <a routerLink="/dashboard">
-            <i class="icon-home"></i>
-          </a>
-        </li>
-        <li class="separator">
-          <i class="icon-arrow-right"></i>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/users">Users</a>
-        </li>
-      </ul>
+    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+      <div>
+        <div class="page-header">
+          <h3 class="fw-bold mb-3">Management</h3>
+          <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+              <a routerLink="/dashboard">
+                <i class="icon-home"></i>
+              </a>
+            </li>
+            <li class="separator">
+              <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/clients">Clients</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="ms-md-auto py-2 py-md-0">
+        <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
+        <a href="#" class="btn btn-primary btn-round">Add Client</a>
+      </div>
     </div>
+   
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            <h4 class="card-title">List Users</h4>
+            <h4 class="card-title">List Clients</h4>
             <input
               type="text"
               class="form-control"
               placeholder="Search by name or email"
               [(ngModel)]="searchTerm"
-              (ngModelChange)="filterUsers()"
+              (ngModelChange)="filterClients()"
             />
           </div>
           <div class="card-body">
@@ -36,21 +45,19 @@
                   <tr>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Date of Birth</th>
                     <th>Phone</th>
-                    <th>Account Status</th>
+                    <th>Address</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let user of paginatedUsers">
-                    <td>{{ user.firstname }} {{ user.lastname }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.dateOfBirth }}</td>
-                    <td>{{ user.phone }}</td>
-                    <td>{{ user.accountLocked ? 'Locked' : 'Active' }}</td>
+                  <tr *ngFor="let client of paginatedClients">
+                    <td>{{ client.nomClient }}</td>
+                    <td>{{ client.mail }}</td>
+                    <td>{{ client.phone }}</td>
+                    <td>{{ client.adresseClient }}</td>
                     <td>
-                      <button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">
+                      <button class="btn btn-danger btn-sm" (click)="deleteClient(client.id)">
                         <i class="icon-trash"></i>
                       </button>
                     </td>
