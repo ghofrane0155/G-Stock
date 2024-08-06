@@ -23,9 +23,9 @@
   <div class="sidebar-wrapper scrollbar scrollbar-inner">
     <div class="sidebar-content">
       <ul class="nav nav-secondary">
-        <li class="nav-item active">
+        <li class="nav-item">
           <a data-bs-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
-            <i class="fas fa-home"></i>
+            <i class="fas fa-tachometer-alt"></i>
             <p>Dashboard</p>
             <span class="caret"></span>
           </a>
@@ -40,34 +40,24 @@
           </div>
         </li>
 
-        <li class="nav-item active">
-          <a data-bs-toggle="collapse" href="#users" class="collapsed" aria-expanded="false">
-            <i class="fas fa-user"></i>
-            <p>User Management</p>
-            <span class="caret"></span>
+        <li class="nav-item">
+          <a routerLink="/users" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fas fa-users"></i>
+            <p>Employees</p>
           </a>
-          <div class="collapse" id="users">
-            <ul class="nav nav-collapse">
-              <li>
-                <a href="/users">
-                  <span class="sub-item">Employees</span>
-                </a>
-              </li>
-              <li>
-                <a href="/clients">
-                  <span class="sub-item">Clients</span>
-                </a>
-              </li>
-              <li>
-                <a href="/fournisseurs">
-                  <span class="sub-item">Fournisseurs</span>
-                </a>
-              </li>
-            </ul>
-          </div>
         </li>
-
-       
+        <li class="nav-item">
+          <a routerLink="/clients" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fas fa-user-friends"></i>
+            <p>Clients</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/fournisseurs" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fas fa-box"></i>
+            <p>Fournisseurs</p>
+          </a>
+        </li>
 
         <!-- Settings Section -->
         <li class="nav-section">
@@ -77,13 +67,13 @@
           <h4 class="text-section">Settings</h4>
         </li>
         <li class="nav-item">
-          <a routerLink="/view-profile" class="collapsed" aria-expanded="false">
+          <a routerLink="/view-profile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             <i class="fas fa-id-card"></i>
             <p>View Profile</p>
           </a>
         </li>
         <li class="nav-item">
-          <a routerLink="/account-settings" class="collapsed" aria-expanded="false">
+          <a routerLink="/account-settings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             <i class="fas fa-cog"></i>
             <p>Account Settings</p>
           </a>
