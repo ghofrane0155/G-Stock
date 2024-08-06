@@ -9,15 +9,22 @@ import Swal from 'sweetalert2';
   styleUrls: ['./fournisseurs.component.scss']
 })
 export class FournisseursComponent implements OnInit {
-addFournisseur() {
-throw new Error('Method not implemented.');
-}
   fournisseurs: Fournisseur[] = [];
   paginatedFournisseurs: Fournisseur[] = [];
   searchTerm: string = '';
   currentPage: number = 1;
   itemsPerPage: number = 10;
   totalPages: number = 0;
+  showModal: boolean = false;
+  editMode: boolean = false;
+  newFournisseur: Fournisseur = {
+    matriculeFiscale: '',
+    nomFournisseur: '',
+    adresseFournisseur: '',
+    phone: '',
+    mail: '',
+    fax: ''
+  };
 
   constructor(private fournisseurService: FournisseurService) {}
 
@@ -77,19 +84,68 @@ throw new Error('Method not implemented.');
           this.fournisseurService.deleteFournisseur(id).subscribe({
             next: () => {
               this.fournisseurs = this.fournisseurs.filter(f => f.id !== id);
+              this.updatePagination();
               Swal.fire('Deleted!', 'Fournisseur has been deleted.', 'success');
             },
             error: (err) => {
-              Swal.fire(
-                'Error!', 'Failed to delete fournisseur.', 'error');
-                console.error('Failed to delete fournisseur', err);
-              }
+              Swal.fire('Error!', 'Failed to delete fournisseur.', 'error');
+              console.error('Failed to delete fournisseur', err);
+            }
           });
         }
       });
     }
   }
 
+  addFournisseur(): void {
+    this.fournisseurService.addFournisseur(this.newFournisseur).subscribe({
+      next: (fournisseur: Fournisseur) => {
+        this.fournisseurs.push(fournisseur);
+        this.updatePagination();
+        this.resetForm();
+        Swal.fire('Added!', 'Fournisseur has been added.', 'success');
+      },
+      error: (err) => {
+        Swal.fire('Error!', 'Failed to add fournisseur.', 'error');
+        console.error('Failed to add fournisseur', err);
+      }
+    });
+  }
 
+  editFournisseur(fournisseur: Fournisseur): void {
+    this.editMode = true;
+    this.showModal = true;
+    this.newFournisseur = { ...fournisseur };
+  }
 
+  updateFournisseur(): void {
+    this.fournisseurService.updateFournisseur(this.newFournisseur).subscribe({
+      next: (updatedFournisseur: Fournisseur) => {
+        const index = this.fournisseurs.findIndex(f => f.id === updatedFournisseur.id);
+        if (index !== -1) {
+          this.fournisseurs[index] = updatedFournisseur;
+          this.updatePagination();
+          this.resetForm();
+          Swal.fire('Updated!', 'Fournisseur has been updated.', 'success');
+        }
+      },
+      error: (err) => {
+        Swal.fire('Error!', 'Failed to update fournisseur.', 'error');
+        console.error('Failed to update fournisseur', err);
+      }
+    });
+  }
+
+  resetForm(): void {
+    this.showModal = false;
+    this.editMode = false;
+    this.newFournisseur = {
+      matriculeFiscale: '',
+      nomFournisseur: '',
+      adresseFournisseur: '',
+      phone: '',
+      mail: '',
+      fax: ''
+    };
+  }
 }

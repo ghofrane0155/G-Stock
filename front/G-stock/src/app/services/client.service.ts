@@ -29,6 +29,7 @@ export class ClientService {
   }
 
   deleteClient(id: number): Observable<void> {
+    console.log(`Deleting client with ID: ${id}`);
     return this.http.delete<void>(`${this.baseUrl}/delete/${id}`);
   }
 }

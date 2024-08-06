@@ -15,13 +15,9 @@ export class ClientsComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 10;
   totalPages: number = 0;
-  newClient: Client = {
-    nomClient: '',
-    adresseClient: '',
-    phone: '',
-    mail: ''
-  };
   showModal: boolean = false;
+  editMode: boolean = false;
+  newClient: Client = {nomClient: '',adresseClient: '',phone: '',mail: ''};
 
   constructor(private clientService: ClientService) {}
 
@@ -65,43 +61,39 @@ export class ClientsComponent implements OnInit {
   isActivePage(page: number): boolean {
     return this.currentPage === page;
   }
-
-  deleteClient(id: number | undefined): void {
-    if (id !== undefined) {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: 'You won\'t be able to revert this!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.clientService.deleteClient(id).subscribe({
-            next: () => {
-              this.clients = this.clients.filter(c => c.id !== id);
-              this.updatePagination();
-              Swal.fire('Deleted!', 'Client has been deleted.', 'success');
-            },
-            error: (err) => {
-              Swal.fire('Error!', 'Failed to delete client.', 'error');
-              console.error('Failed to delete client', err);
-            }
-          });
+  
+  deleteClient(client: Client): void {
+    console.log('client id :',client.idClient)
+    if (client.idClient) { // This check ensures client.id is defined and not 0
+      this.clientService.deleteClient(client.idClient).subscribe({
+        next: () => {
+          this.clients = this.clients.filter(c => c.idClient !== client.idClient);
+          this.updatePagination();
+          Swal.fire('Deleted!', 'Client has been deleted.', 'success');
+        },
+        error: (err) => {
+          Swal.fire('Error!', 'Failed to delete client.', 'error');
+          console.error('Failed to delete client', err);
         }
       });
+    } else {
+      console.error('Client ID is undefined or invalid:', client.idClient);
     }
   }
+  
+  
+
+  logClient(client: Client): void {
+    console.log('Client:', client);
+  }
+  
 
   addClient(): void {
     this.clientService.addClient(this.newClient).subscribe({
       next: (client: Client) => {
         this.clients.push(client);
-        this.totalPages = Math.ceil(this.clients.length / this.itemsPerPage);
         this.updatePagination();
         this.resetForm();
-        this.showModal = false; // Close the modal
         Swal.fire('Added!', 'Client has been added.', 'success');
       },
       error: (err) => {
@@ -111,13 +103,38 @@ export class ClientsComponent implements OnInit {
     });
   }
 
+  editClient(client: Client): void {
+    this.editMode = true;
+    this.showModal = true;
+    this.newClient = { ...client };
+  }
+
+  updateClient(): void {
+    this.clientService.updateClient(this.newClient).subscribe({
+      next: (updatedClient: Client) => {
+        const index = this.clients.findIndex(c => c.idClient === updatedClient.idClient);
+        if (index !== -1) {
+          this.clients[index] = updatedClient;
+          this.updatePagination();
+          this.resetForm();
+          Swal.fire('Updated!', 'Client has been updated.', 'success');
+        }
+      },
+      error: (err) => {
+        Swal.fire('Error!', 'Failed to update client.', 'error');
+        console.error('Failed to update client', err);
+      }
+    });
+  }
+
   resetForm(): void {
-    this.newClient = {
-      nomClient: '',
-      adresseClient: '',
-      phone: '',
-      mail: ''
-    };
-    this.showModal = false; // Close the modal on form reset
+    this.showModal = false;
+    this.editMode = false;
+    this.newClient = {nomClient: '',adresseClient: '',phone: '',mail: ''};
+  }
+
+  openAddClientModal(): void {
+    this.editMode = false;
+    this.showModal = true;
   }
 }
