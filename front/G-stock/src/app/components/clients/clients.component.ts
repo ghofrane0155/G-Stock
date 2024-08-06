@@ -61,14 +61,21 @@ export class ClientsComponent implements OnInit {
   isActivePage(page: number): boolean {
     return this.currentPage === page;
   }
-  
+/*************delete****************** */
   deleteClient(client: Client): void {
-    console.log('client id :',client.idClient)
-    if (client.idClient) { // This check ensures client.id is defined and not 0
+    if (client.idClient) { // This check ensures client.idClient is defined and not 0
       this.clientService.deleteClient(client.idClient).subscribe({
         next: () => {
+          // Remove the client from the local list
           this.clients = this.clients.filter(c => c.idClient !== client.idClient);
+          // Recalculate total pages and adjust current page if necessary
+          this.totalPages = Math.ceil(this.clients.length / this.itemsPerPage);
+          if (this.currentPage > this.totalPages) {
+            this.currentPage = this.totalPages > 0 ? this.totalPages : 1;
+          }
+          // Update paginated clients
           this.updatePagination();
+  
           Swal.fire('Deleted!', 'Client has been deleted.', 'success');
         },
         error: (err) => {
@@ -80,29 +87,29 @@ export class ClientsComponent implements OnInit {
       console.error('Client ID is undefined or invalid:', client.idClient);
     }
   }
-  
-  
+/*************add****************** */
+addClient(): void {
+  this.clientService.addClient(this.newClient).subscribe({
+    next: (client: Client) => {
+      this.clients.push(client); // Add the new client to the array
+      this.totalPages = Math.ceil(this.clients.length / this.itemsPerPage);
 
-  logClient(client: Client): void {
-    console.log('Client:', client);
-  }
-  
-
-  addClient(): void {
-    this.clientService.addClient(this.newClient).subscribe({
-      next: (client: Client) => {
-        this.clients.push(client);
-        this.updatePagination();
-        this.resetForm();
-        Swal.fire('Added!', 'Client has been added.', 'success');
-      },
-      error: (err) => {
-        Swal.fire('Error!', 'Failed to add client.', 'error');
-        console.error('Failed to add client', err);
+      // Adjust current page if it exceeds the total pages
+      if (this.currentPage > this.totalPages) {
+        this.currentPage = this.totalPages > 0 ? this.totalPages : 1;
       }
-    });
-  }
 
+      this.updatePagination(); // Update paginated clients
+      this.resetForm();
+      Swal.fire('Added!', 'Client has been added.', 'success');
+    },
+    error: (err) => {
+      Swal.fire('Error!', 'Failed to add client.', 'error');
+      console.error('Failed to add client', err);
+    }
+  });
+}
+/*************update****************** */
   editClient(client: Client): void {
     this.editMode = true;
     this.showModal = true;
@@ -126,7 +133,7 @@ export class ClientsComponent implements OnInit {
       }
     });
   }
-
+/******************************* */
   resetForm(): void {
     this.showModal = false;
     this.editMode = false;
