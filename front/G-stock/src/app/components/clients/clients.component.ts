@@ -15,6 +15,13 @@ export class ClientsComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 10;
   totalPages: number = 0;
+  newClient: Client = {
+    nomClient: '',
+    adresseClient: '',
+    phone: '',
+    mail: ''
+  };
+  showModal: boolean = false;
 
   constructor(private clientService: ClientService) {}
 
@@ -74,11 +81,11 @@ export class ClientsComponent implements OnInit {
           this.clientService.deleteClient(id).subscribe({
             next: () => {
               this.clients = this.clients.filter(c => c.id !== id);
+              this.updatePagination();
               Swal.fire('Deleted!', 'Client has been deleted.', 'success');
             },
             error: (err) => {
-              Swal.fire(
-                'Error!', 'Failed to delete client.', 'error');
+              Swal.fire('Error!', 'Failed to delete client.', 'error');
               console.error('Failed to delete client', err);
             }
           });
@@ -87,4 +94,30 @@ export class ClientsComponent implements OnInit {
     }
   }
 
+  addClient(): void {
+    this.clientService.addClient(this.newClient).subscribe({
+      next: (client: Client) => {
+        this.clients.push(client);
+        this.totalPages = Math.ceil(this.clients.length / this.itemsPerPage);
+        this.updatePagination();
+        this.resetForm();
+        this.showModal = false; // Close the modal
+        Swal.fire('Added!', 'Client has been added.', 'success');
+      },
+      error: (err) => {
+        Swal.fire('Error!', 'Failed to add client.', 'error');
+        console.error('Failed to add client', err);
+      }
+    });
+  }
+
+  resetForm(): void {
+    this.newClient = {
+      nomClient: '',
+      adresseClient: '',
+      phone: '',
+      mail: ''
+    };
+    this.showModal = false; // Close the modal on form reset
+  }
 }
