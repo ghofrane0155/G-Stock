@@ -62,31 +62,45 @@ export class ClientsComponent implements OnInit {
     return this.currentPage === page;
   }
 /*************delete****************** */
-  deleteClient(client: Client): void {
-    if (client.idClient) { // This check ensures client.idClient is defined and not 0
-      this.clientService.deleteClient(client.idClient).subscribe({
-        next: () => {
-          // Remove the client from the local list
-          this.clients = this.clients.filter(c => c.idClient !== client.idClient);
-          // Recalculate total pages and adjust current page if necessary
-          this.totalPages = Math.ceil(this.clients.length / this.itemsPerPage);
-          if (this.currentPage > this.totalPages) {
-            this.currentPage = this.totalPages > 0 ? this.totalPages : 1;
+deleteClient(id: number | undefined): void {
+  if (id !== undefined) { // Ensure client.idClient is defined
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.clientService.deleteClient(id).subscribe({
+          next: () => {
+            // Remove the client from the local list
+            this.clients = this.clients.filter(c => c.idClient !== id);
+            // Recalculate total pages and adjust current page if necessary
+            this.totalPages = Math.ceil(this.clients.length / this.itemsPerPage);
+            if (this.currentPage > this.totalPages) {
+              this.currentPage = this.totalPages > 0 ? this.totalPages : 1;
+            }
+            // Update paginated clients
+            this.updatePagination();
+
+            Swal.fire('Deleted!', 'Client has been deleted.', 'success');
+          },
+          error: (err) => {
+            Swal.fire('Error!', 'Failed to delete client.', 'error');
+            console.error('Failed to delete client', err);
           }
-          // Update paginated clients
-          this.updatePagination();
-  
-          Swal.fire('Deleted!', 'Client has been deleted.', 'success');
-        },
-        error: (err) => {
-          Swal.fire('Error!', 'Failed to delete client.', 'error');
-          console.error('Failed to delete client', err);
-        }
-      });
-    } else {
-      console.error('Client ID is undefined or invalid:', client.idClient);
-    }
+        });
+      }
+    });
+  } else {
+    console.error('Client ID is undefined or invalid:', id);
   }
+}
+
+
 /*************add****************** */
 addClient(): void {
   this.clientService.addClient(this.newClient).subscribe({

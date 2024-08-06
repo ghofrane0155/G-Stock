@@ -1,5 +1,5 @@
 export interface Fournisseur {
-    id?: number;
+    idFournisseur?: number;
     matriculeFiscale: string;
     nomFournisseur: string;
     adresseFournisseur: string;

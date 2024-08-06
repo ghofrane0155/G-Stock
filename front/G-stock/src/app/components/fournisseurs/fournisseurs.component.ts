@@ -83,7 +83,14 @@ export class FournisseursComponent implements OnInit {
         if (result.isConfirmed) {
           this.fournisseurService.deleteFournisseur(id).subscribe({
             next: () => {
-              this.fournisseurs = this.fournisseurs.filter(f => f.id !== id);
+              this.fournisseurs = this.fournisseurs.filter(f => f.idFournisseur !== id);
+              this.totalPages = Math.ceil(this.fournisseurs.length / this.itemsPerPage);
+              
+              // Adjust current page if it exceeds total pages
+              if (this.currentPage > this.totalPages && this.totalPages > 0) {
+                this.currentPage = this.totalPages;
+              }
+
               this.updatePagination();
               Swal.fire('Deleted!', 'Fournisseur has been deleted.', 'success');
             },
@@ -101,6 +108,13 @@ export class FournisseursComponent implements OnInit {
     this.fournisseurService.addFournisseur(this.newFournisseur).subscribe({
       next: (fournisseur: Fournisseur) => {
         this.fournisseurs.push(fournisseur);
+        this.totalPages = Math.ceil(this.fournisseurs.length / this.itemsPerPage);
+        
+        // Adjust current page if it exceeds total pages
+        if (this.currentPage > this.totalPages && this.totalPages > 0) {
+          this.currentPage = this.totalPages;
+        }
+
         this.updatePagination();
         this.resetForm();
         Swal.fire('Added!', 'Fournisseur has been added.', 'success');
@@ -121,7 +135,7 @@ export class FournisseursComponent implements OnInit {
   updateFournisseur(): void {
     this.fournisseurService.updateFournisseur(this.newFournisseur).subscribe({
       next: (updatedFournisseur: Fournisseur) => {
-        const index = this.fournisseurs.findIndex(f => f.id === updatedFournisseur.id);
+        const index = this.fournisseurs.findIndex(f => f.idFournisseur === updatedFournisseur.idFournisseur);
         if (index !== -1) {
           this.fournisseurs[index] = updatedFournisseur;
           this.updatePagination();

@@ -20,7 +20,6 @@
         </div>
       </div>
       <div class="ms-md-auto py-2 py-md-0">
-        <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
         <button class="btn btn-primary btn-round" (click)="showModal = true">Add Fournisseur</button>
       </div>
     </div>
@@ -61,10 +60,10 @@
                     <td>{{ fournisseur.phone }}</td>
                     <td>{{ fournisseur.fax ? fournisseur.fax : '--' }}</td>
                     <td>
-                      <button class="btn btn-warning btn-sm" (click)="editFournisseur(fournisseur)">
+                      <button class="btn btn-primary btn-sm" (click)="editFournisseur(fournisseur)">
                         <i class="icon-pencil"></i>
                       </button>
-                      <button class="btn btn-danger btn-sm" (click)="deleteFournisseur(fournisseur.id)">
+                      <button class="btn btn-danger btn-sm" (click)="deleteFournisseur(fournisseur.idFournisseur)">
                         <i class="icon-trash"></i>
                       </button>
                     </td>
