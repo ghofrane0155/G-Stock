@@ -100,35 +100,51 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="resetForm()"></button>
       </div>
       <div class="modal-body">
-        <form (ngSubmit)="editMode ? updateFournisseur() : addFournisseur()">
+        <form [formGroup]="fournisseurForm" (ngSubmit)="editMode ? updateFournisseur() : addFournisseur()">
           <div class="mb-3">
             <label for="matriculeFiscale" class="form-label">Matricule Fiscale</label>
-            <input type="text" class="form-control" id="matriculeFiscale" [(ngModel)]="newFournisseur.matriculeFiscale" name="matriculeFiscale" required>
+            <input type="text" class="form-control" id="matriculeFiscale" formControlName="matriculeFiscale">
+            <div *ngIf="fournisseurForm.get('matriculeFiscale')?.invalid && (fournisseurForm.get('matriculeFiscale')?.touched || fournisseurForm.get('matriculeFiscale')?.dirty)" class="text-danger">
+              <div *ngIf="fournisseurForm.get('matriculeFiscale')?.errors?.['required']">Matricule Fiscale is required.</div>
+            </div>
           </div>
           <div class="mb-3">
             <label for="nomFournisseur" class="form-label">Name</label>
-            <input type="text" class="form-control" id="nomFournisseur" [(ngModel)]="newFournisseur.nomFournisseur" name="nomFournisseur" required>
+            <input type="text" class="form-control" id="nomFournisseur" formControlName="nomFournisseur">
+            <div *ngIf="fournisseurForm.get('nomFournisseur')?.invalid && (fournisseurForm.get('nomFournisseur')?.touched || fournisseurForm.get('nomFournisseur')?.dirty)" class="text-danger">
+              <div *ngIf="fournisseurForm.get('nomFournisseur')?.errors?.['required']">Name is required.</div>
+            </div>
           </div>
           <div class="mb-3">
             <label for="mail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="mail" [(ngModel)]="newFournisseur.mail" name="mail" required>
+            <input type="email" class="form-control" id="mail" formControlName="mail">
+            <div *ngIf="fournisseurForm.get('mail')?.invalid && (fournisseurForm.get('mail')?.touched || fournisseurForm.get('mail')?.dirty)" class="text-danger">
+              <div *ngIf="fournisseurForm.get('mail')?.errors?.['required']">Email is required.</div>
+              <div *ngIf="fournisseurForm.get('mail')?.errors?.['email']">Invalid email format.</div>
+            </div>
           </div>
           <div class="mb-3">
             <label for="adresseFournisseur" class="form-label">Address</label>
-            <input type="text" class="form-control" id="adresseFournisseur" [(ngModel)]="newFournisseur.adresseFournisseur" name="adresseFournisseur">
+            <input type="text" class="form-control" id="adresseFournisseur" formControlName="adresseFournisseur">
           </div>
           <div class="mb-3">
             <label for="phone" class="form-label">Phone</label>
-            <input type="text" class="form-control" id="phone" [(ngModel)]="newFournisseur.phone" name="phone">
+            <input type="text" class="form-control" id="phone" formControlName="phone">
+            <div *ngIf="fournisseurForm.get('phone')?.invalid && (fournisseurForm.get('phone')?.touched || fournisseurForm.get('phone')?.dirty)" class="text-danger">
+              <div *ngIf="fournisseurForm.get('phone')?.errors?.['required']">Phone is required.</div>
+              <div *ngIf="fournisseurForm.get('phone')?.errors?.['pattern']">Phone number must be 8 digits.</div>
+            </div>
           </div>
           <div class="mb-3">
             <label for="fax" class="form-label">Fax</label>
-            <input type="text" class="form-control" id="fax" [(ngModel)]="newFournisseur.fax" name="fax">
+            <input type="text" class="form-control" id="fax" formControlName="fax">
           </div>
-          <button type="submit" class="btn btn-primary">{{ editMode ? 'Update' : 'Add' }} Fournisseur</button>
+          <button type="submit" class="btn btn-primary" [disabled]="fournisseurForm.invalid">{{ editMode ? 'Update' : 'Add' }} Fournisseur</button>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+
 
