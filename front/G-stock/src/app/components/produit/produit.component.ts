@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProduitService } from '../../services/services/produit.service';
-import { CategorieService } from '../../services/services/category.service';
-import { Produit } from '../../services/models/produit';
-import { Category } from '../../services/models/category';
+import { Produit } from '../../models/produit';
+import { Category } from '../../models/category';
+import { ProduitService } from '../../services/produit.service';
+import { CategoryService } from '../../services/category.service';
+
 
 
 @Component({
@@ -27,7 +28,7 @@ export class ProduitComponent implements OnInit {
 
   constructor(
     private produitService: ProduitService,
-    private categorieService: CategorieService,
+    private categoryService: CategoryService,
     private fb: FormBuilder
   ) {
     this.produitForm = this.fb.group({
@@ -58,7 +59,7 @@ export class ProduitComponent implements OnInit {
   }
 
   getCategories(): void {
-    this.categorieService.getCategories().subscribe(
+    this.categoryService.getCategories().subscribe(
       (data: Category[]) => {
         this.categories = data;
       },

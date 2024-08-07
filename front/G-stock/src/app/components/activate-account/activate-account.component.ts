@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../../services/services';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-activate-account',
@@ -17,20 +17,20 @@ export class ActivateAccountComponent {
   ) {}
 
   private confirmAccount(token: string) {
-    this.authService.confirm({
-      token
-    }).subscribe({
-      next: () => {
-        this.message = 'Your account has been successfully activated.\nNow you can proceed to login';
-        this.submitted = true;
-      },
-      error: () => {
-        this.message = 'Token has been expired or invalid';
-        this.submitted = true;
-        this.isOkay = false;
-      }
-    });
+    this.authService.activateAccount(token)
+      .subscribe({
+        next: () => {
+          this.message = 'Your account has been successfully activated. Now you can proceed to login.';
+          this.submitted = true;
+        },
+        error: () => {
+          this.message = 'The token has expired or is invalid.';
+          this.submitted = true;
+          this.isOkay = false;
+        }
+      });
   }
+  
 
   redirectToLogin() {
     this.router.navigate(['login']);

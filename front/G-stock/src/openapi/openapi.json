@@ -10,6 +10,12 @@
             "description": "Generated server url"
         }
     ],
+    "tags": [
+        {
+            "name": "Produit",
+            "description": "Produit management APIs"
+        }
+    ],
     "paths": {
         "/user/update": {
             "put": {
@@ -34,6 +40,143 @@
                             "*/*": {
                                 "schema": {
                                     "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/produit/update": {
+            "put": {
+                "tags": [
+                    "Produit"
+                ],
+                "operationId": "updateProduit",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Produit"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Produit"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/categorie/update": {
+            "put": {
+                "tags": [
+                    "categorie-controller"
+                ],
+                "operationId": "updateCategorie",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Categorie"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Categorie"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/produit/add": {
+            "post": {
+                "tags": [
+                    "Produit"
+                ],
+                "summary": "Add a new produit",
+                "operationId": "addProduit",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "categorieId",
+                                    "logo",
+                                    "produit"
+                                ],
+                                "type": "object",
+                                "properties": {
+                                    "produit": {
+                                        "$ref": "#/components/schemas/Produit"
+                                    },
+                                    "logo": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "categorieId": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Produit"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/categorie/add": {
+            "post": {
+                "tags": [
+                    "categorie-controller"
+                ],
+                "operationId": "addCategorie",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Categorie"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Categorie"
                                 }
                             }
                         }
@@ -204,6 +347,106 @@
                 }
             }
         },
+        "/user/produit/sortedByPrixUnitaire": {
+            "get": {
+                "tags": [
+                    "Produit"
+                ],
+                "operationId": "getProduitsSortedByPrixUnitaire",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Produit"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/produit/getProduitById/{id}": {
+            "get": {
+                "tags": [
+                    "Produit"
+                ],
+                "operationId": "getProduitById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Produit"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/produit/getAll": {
+            "get": {
+                "tags": [
+                    "Produit"
+                ],
+                "operationId": "retrieveAllProduits",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Produit"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/categorie/getAll": {
+            "get": {
+                "tags": [
+                    "categorie-controller"
+                ],
+                "operationId": "retrieveAllCategories",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Categorie"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/all": {
             "get": {
                 "tags": [
@@ -240,6 +483,54 @@
                         "required": true,
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/user/produit/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Produit"
+                ],
+                "operationId": "deleteProduit",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/user/categorie/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "categorie-controller"
+                ],
+                "operationId": "deleteCategorie",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -333,6 +624,9 @@
                     "fullName": {
                         "type": "string"
                     },
+                    "username": {
+                        "type": "string"
+                    },
                     "authorities": {
                         "type": "array",
                         "items": {
@@ -342,14 +636,51 @@
                     "accountNonExpired": {
                         "type": "boolean"
                     },
-                    "username": {
-                        "type": "string"
-                    },
                     "credentialsNonExpired": {
                         "type": "boolean"
                     },
                     "accountNonLocked": {
                         "type": "boolean"
+                    }
+                }
+            },
+            "Categorie": {
+                "type": "object",
+                "properties": {
+                    "idCategorie": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "nomCategorie": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Produit": {
+                "type": "object",
+                "properties": {
+                    "idProduit": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "nomProduit": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "prixUnitaire": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "codeAB": {
+                        "type": "string"
+                    },
+                    "logo": {
+                        "type": "string"
+                    },
+                    "categorie": {
+                        "$ref": "#/components/schemas/Categorie"
                     }
                 }
             },

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { RegistrationRequest } from '../../services/models';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../../services/services';
+import { RegistrationRequest } from '../../models/registration-request';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +28,7 @@ export class RegisterComponent {
     this.errorMsg = '';
     this.errorMsgs = [];
     this.currentErrorIndex = 0;
-    this.authService.register({ body: this.registerRequest })
+    this.authService.register(this.registerRequest) // Corrected service method call
       .subscribe({
         next: () => {
           this.router.navigate(['activate-account']);

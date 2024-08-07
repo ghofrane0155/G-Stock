@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 //@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController {
     @Autowired
     IGestionUser iGestionUser;
@@ -45,11 +46,21 @@ public class UserController {
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         try {
-
             User updatedUser = iGestionUser.update(user);
             return ResponseEntity.ok(updatedUser);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+        try {
+            iGestionUser.delete(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

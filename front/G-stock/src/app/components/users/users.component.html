@@ -39,6 +39,7 @@
                     <th>Date of Birth</th>
                     <th>Phone</th>
                     <th>Account Status</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -48,6 +49,11 @@
                     <td>{{ user.dateOfBirth }}</td>
                     <td>{{ user.phone }}</td>
                     <td>{{ user.accountLocked ? 'Locked' : 'Active' }}</td>
+                    <td>
+                      <button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">
+                        <i class="icon-trash"></i>
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
