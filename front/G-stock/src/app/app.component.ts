@@ -7,7 +7,6 @@ import { NavigationEnd, Router } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'Gstock'; 
   currentRoute: string | undefined;
 
   constructor(private router: Router) {
