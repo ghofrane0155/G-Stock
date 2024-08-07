@@ -8,7 +8,7 @@ import tn.esprit.stock.services.IGestionCategorie;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categorie")
+@RequestMapping("/user/categorie")
 @CrossOrigin
 public class CategorieController {
     @Autowired
