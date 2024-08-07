@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClientService } from '../../services/client.service';
 import { Client } from '../../models/client';
 import Swal from 'sweetalert2';
@@ -17,9 +18,17 @@ export class ClientsComponent implements OnInit {
   totalPages: number = 0;
   showModal: boolean = false;
   editMode: boolean = false;
-  newClient: Client = {nomClient: '',adresseClient: '',phone: '',mail: ''};
+  clientForm: FormGroup;
 
-  constructor(private clientService: ClientService) {}
+  constructor(private clientService: ClientService, private fb: FormBuilder) {
+    this.clientForm = this.fb.group({
+      idClient: [null], // Field for the client ID
+      nomClient: ['', Validators.required],
+      mail: ['', [Validators.required, Validators.email]],
+      adresseClient: [''],
+      phone: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]] // Phone number validation for exactly 8 digits
+    });
+  }
 
   ngOnInit(): void {
     this.loadClients();
@@ -39,8 +48,8 @@ export class ClientsComponent implements OnInit {
   }
 
   filterClients(): void {
-    const filtered = this.clients.filter(c => 
-      c.nomClient.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
+    const filtered = this.clients.filter(c =>
+      c.nomClient.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       c.mail.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
     this.totalPages = Math.ceil(filtered.length / this.itemsPerPage);
@@ -61,77 +70,68 @@ export class ClientsComponent implements OnInit {
   isActivePage(page: number): boolean {
     return this.currentPage === page;
   }
-/*************delete****************** */
-deleteClient(id: number | undefined): void {
-  if (id !== undefined) { // Ensure client.idClient is defined
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.clientService.deleteClient(id).subscribe({
-          next: () => {
-            // Remove the client from the local list
-            this.clients = this.clients.filter(c => c.idClient !== id);
-            // Recalculate total pages and adjust current page if necessary
-            this.totalPages = Math.ceil(this.clients.length / this.itemsPerPage);
-            if (this.currentPage > this.totalPages) {
-              this.currentPage = this.totalPages > 0 ? this.totalPages : 1;
-            }
-            // Update paginated clients
-            this.updatePagination();
 
-            Swal.fire('Deleted!', 'Client has been deleted.', 'success');
-          },
-          error: (err) => {
-            Swal.fire('Error!', 'Failed to delete client.', 'error');
-            console.error('Failed to delete client', err);
-          }
-        });
+  deleteClient(id: number | undefined): void {
+    if (id !== undefined) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.clientService.deleteClient(id).subscribe({
+            next: () => {
+              this.clients = this.clients.filter(c => c.idClient !== id);
+              this.totalPages = Math.ceil(this.clients.length / this.itemsPerPage);
+              if (this.currentPage > this.totalPages) {
+                this.currentPage = this.totalPages > 0 ? this.totalPages : 1;
+              }
+              this.updatePagination();
+              Swal.fire('Deleted!', 'Client has been deleted.', 'success');
+            },
+            error: (err) => {
+              Swal.fire('Error!', 'Failed to delete client.', 'error');
+              console.error('Failed to delete client', err);
+            }
+          });
+        }
+      });
+    } else {
+      console.error('Client ID is undefined or invalid:', id);
+    }
+  }
+
+  addClient(): void {
+    this.clientService.addClient(this.clientForm.value).subscribe({
+      next: (client: Client) => {
+        this.clients.push(client);
+        this.totalPages = Math.ceil(this.clients.length / this.itemsPerPage);
+        if (this.currentPage > this.totalPages) {
+          this.currentPage = this.totalPages > 0 ? this.totalPages : 1;
+        }
+        this.updatePagination();
+        this.resetForm();
+        Swal.fire('Added!', 'Client has been added.', 'success');
+      },
+      error: (err) => {
+        Swal.fire('Error!', 'Failed to add client.', 'error');
+        console.error('Failed to add client', err);
       }
     });
-  } else {
-    console.error('Client ID is undefined or invalid:', id);
   }
-}
 
-
-/*************add****************** */
-addClient(): void {
-  this.clientService.addClient(this.newClient).subscribe({
-    next: (client: Client) => {
-      this.clients.push(client); // Add the new client to the array
-      this.totalPages = Math.ceil(this.clients.length / this.itemsPerPage);
-
-      // Adjust current page if it exceeds the total pages
-      if (this.currentPage > this.totalPages) {
-        this.currentPage = this.totalPages > 0 ? this.totalPages : 1;
-      }
-
-      this.updatePagination(); // Update paginated clients
-      this.resetForm();
-      Swal.fire('Added!', 'Client has been added.', 'success');
-    },
-    error: (err) => {
-      Swal.fire('Error!', 'Failed to add client.', 'error');
-      console.error('Failed to add client', err);
-    }
-  });
-}
-/*************update****************** */
   editClient(client: Client): void {
     this.editMode = true;
     this.showModal = true;
-    this.newClient = { ...client };
+    this.clientForm.patchValue(client);
   }
 
   updateClient(): void {
-    this.clientService.updateClient(this.newClient).subscribe({
+    this.clientService.updateClient(this.clientForm.value).subscribe({
       next: (updatedClient: Client) => {
         const index = this.clients.findIndex(c => c.idClient === updatedClient.idClient);
         if (index !== -1) {
@@ -147,15 +147,18 @@ addClient(): void {
       }
     });
   }
-/******************************* */
+
   resetForm(): void {
     this.showModal = false;
     this.editMode = false;
-    this.newClient = {nomClient: '',adresseClient: '',phone: '',mail: ''};
+    this.clientForm.reset();
+    this.clientForm.patchValue({ idClient: null }); // Ensure ID is reset
   }
 
   openAddClientModal(): void {
     this.editMode = false;
+    this.clientForm.reset();
+    this.clientForm.patchValue({ idClient: null }); // Ensure ID is reset
     this.showModal = true;
   }
 }

@@ -87,36 +87,48 @@
     </div>
 
     <!-- Add/Edit Client Modal -->
-    <div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="clientModalLabel">{{ editMode ? 'Edit' : 'Add' }} Client</h5>
-            <button type="button" class="btn-close" aria-label="Close" (click)="resetForm()"></button>
-          </div>
-          <div class="modal-body">
-            <form (ngSubmit)="editMode ? updateClient() : addClient()">
-              <div class="mb-3">
-                <label for="nomClient" class="form-label">Name</label>
-                <input type="text" class="form-control" id="nomClient" [(ngModel)]="newClient.nomClient" name="nomClient" required>
+  <div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="clientModalLabel">{{ editMode ? 'Edit' : 'Add' }} Client</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="resetForm()"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="clientForm" (ngSubmit)="editMode ? updateClient() : addClient()">
+            <div class="mb-3">
+              <label for="nomClient" class="form-label">Name</label>
+              <input type="text" class="form-control" id="nomClient" formControlName="nomClient">
+              <div *ngIf="clientForm.controls['nomClient'].invalid && clientForm.controls['nomClient'].touched" class="text-danger">
+                Name is required.
               </div>
-              <div class="mb-3">
-                <label for="mail" class="form-label">Email</label>
-                <input type="email" class="form-control" id="mail" [(ngModel)]="newClient.mail" name="mail" required>
+            </div>
+            <div class="mb-3">
+              <label for="mail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="mail" formControlName="mail">
+              <div *ngIf="clientForm.controls['mail'].invalid && clientForm.controls['mail'].touched" class="text-danger">
+                Valid email is required.
               </div>
-              <div class="mb-3">
-                <label for="adresseClient" class="form-label">Address</label>
-                <input type="text" class="form-control" id="adresseClient" [(ngModel)]="newClient.adresseClient" name="adresseClient">
+            </div>
+            <div class="mb-3">
+              <label for="adresseClient" class="form-label">Address</label>
+              <input type="text" class="form-control" id="adresseClient" formControlName="adresseClient">
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="text" class="form-control" id="phone" formControlName="phone">
+              <div *ngIf="clientForm.controls['phone'].invalid && clientForm.controls['phone'].touched" class="text-danger">
+                <div *ngIf="clientForm.controls['phone'].errors?.['required']">Phone number is required.</div>
+                <div *ngIf="clientForm.controls['phone'].errors?.['pattern']">Phone number must be exactly 8 digits. Example: 90123456.</div>
               </div>
-              <div class="mb-3">
-                <label for="phone" class="form-label">Phone</label>
-                <input type="text" class="form-control" id="phone" [(ngModel)]="newClient.phone" name="phone">
-              </div>
-              <button type="submit" class="btn btn-primary">{{ editMode ? 'Update' : 'Add' }} Client</button>
-            </form>
-          </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" [disabled]="clientForm.invalid">{{ editMode ? 'Update' : 'Add' }} Client</button>
+          </form>
         </div>
       </div>
     </div>
+  </div>
+
   </div>
 </div>
