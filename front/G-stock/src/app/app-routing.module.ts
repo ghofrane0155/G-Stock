@@ -10,6 +10,8 @@ import { ActivateAccountComponent } from './components/activate-account/activate
 import { UsersComponent } from './components/users/users.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { FournisseursComponent } from './components/fournisseurs/fournisseurs.component';
+import { ProduitComponent } from './components/produit/produit.component';
+import { CategoryComponent } from './components/category/category.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -21,6 +23,8 @@ const routes: Routes = [
   { path: 'users', component: UsersComponent },
   { path: 'clients', component: ClientsComponent },
   { path: 'fournisseurs', component: FournisseursComponent },
+  { path: 'produit', component: ProduitComponent },
+  { path: 'category', component: CategoryComponent },
 
 
   { path: 'dashboard', component: DashboardComponent },

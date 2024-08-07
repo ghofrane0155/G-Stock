@@ -1,0 +1,99 @@
+<div class="container">
+  <div class="page-inner">
+    <div class="page-header">
+      <h3 class="fw-bold mb-3">Category Management</h3>
+      <ul class="breadcrumbs mb-3">
+        <li class="nav-home">
+          <a routerLink="/dashboard">
+            <i class="icon-home"></i>
+          </a>
+        </li>
+        <li class="separator">
+          <i class="icon-arrow-right"></i>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/categories">Categories</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Add New Category</h4>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="editMode ? updateCategory() : addCategory()">
+              <div class="form-group">
+                <label for="categoryName">Category Name</label>
+                <input
+                  type="text"
+                  id="categoryName"
+                  class="form-control"
+                  [(ngModel)]="categoryForm.value.nomCategorie"
+                  name="categoryName"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary mt-2">{{ editMode ? 'Update' : 'Add' }} Category</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">List Categories</h4>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search by category name"
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="filterCategories()"
+            />
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table id="basic-datatables" class="display table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Category Name</th>
+                    <th>Number of Products</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let category of paginatedCategories">
+                    <td>{{ category.nomCategorie }}</td>
+                    <td>{{ category.produits?.length || 0 }}</td>
+                    <td>
+                      <button class="btn btn-primary" (click)="editCategory(category)">Edit</button>
+                      <button class="btn btn-danger" (click)="deleteCategory(category.idCategorie)">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pagination mt-3">
+              <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+                </li>
+                <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index">
+                  <a class="page-link" [class.active]="isActivePage(i + 1)" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

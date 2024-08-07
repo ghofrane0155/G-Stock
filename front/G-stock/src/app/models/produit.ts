@@ -1,12 +1,11 @@
-/* tslint:disable */
-/* eslint-disable */
-import { Categorie } from '../models/categorie';
+import { Category } from "./category";
+
 export interface Produit {
-  categorie?: Categorie;
-  codeAB?: string;
-  description?: string;
   idProduit?: number;
+  nomProduit: string;
+  description: string;
+  prixUnitaire: number;
+  codeAB?: string;
   logo?: string;
-  nomProduit?: string;
-  prixUnitaire?: number;
+  categorie?: Category; // Reference to the Categorie interface
 }
