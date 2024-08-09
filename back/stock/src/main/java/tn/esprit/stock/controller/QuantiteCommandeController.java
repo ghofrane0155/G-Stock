@@ -20,9 +20,9 @@ public class QuantiteCommandeController {
         return IgQuantiteCommande.retrieveAllQuantiteCommandes();
     }
 
-    @PostMapping("/add")
-    public QuantiteCommande addQuantiteCommande(@RequestBody QuantiteCommande quantiteCommande) {
-        return IgQuantiteCommande.addQuantiteCommande(quantiteCommande);
+    @PostMapping("/add/{produitId}/{bonCommandeId}")
+    public QuantiteCommande addQuantiteCommande(@RequestBody QuantiteCommande quantiteCommande,@PathVariable("produitId") Long produitId,@PathVariable("bonCommandeId") Long bonCommandeId) {
+        return IgQuantiteCommande.addQuantiteCommande(quantiteCommande,produitId,bonCommandeId);
     }
 
     @PutMapping("/update")

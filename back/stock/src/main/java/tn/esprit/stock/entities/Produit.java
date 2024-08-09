@@ -25,8 +25,8 @@ public class Produit {
     private Categorie categorie;
     @ManyToOne
     private Stock stock;
-    @OneToMany(mappedBy = "produit")
-    private List<QuantiteCommande> listQtCommande;
+    /*@OneToMany(mappedBy = "produit")
+    private List<QuantiteCommande> listQtCommande;*/
 
     @PrePersist
     private void prePersist() {

@@ -20,9 +20,9 @@ public class BonCommandeController {
         return IgBonCommande.retrieveAllBonCommandes();
     }
 
-    @PostMapping("/add")
-    public BonCommande addBonCommande(@RequestBody BonCommande bonCommande) {
-        return IgBonCommande.addBonCommande(bonCommande);
+    @PostMapping("/add/{clientId}")
+    public BonCommande addBonCommande(@RequestBody BonCommande bonCommande,@PathVariable("clientId")Long clientId) {
+        return IgBonCommande.addBonCommande(bonCommande,clientId);
     }
 
     @PutMapping("/update")

@@ -11,8 +11,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.stock.entities.Categorie;
 import tn.esprit.stock.entities.Produit;
+import tn.esprit.stock.entities.Stock;
 import tn.esprit.stock.repository.ICategorieRepository;
 import tn.esprit.stock.repository.IProduitRepository;
+import tn.esprit.stock.repository.IStockRepository;
 
 
 import java.io.IOException;
@@ -30,6 +32,8 @@ public class GestionProduitImpl implements IGestionProduit {
 
     private final IProduitRepository produitRepo;
     private final ICategorieRepository categorieRepo;
+    private final IStockRepository stockRepo;
+
     private static final String uploadDir = "uploads/";
 
     @Override
@@ -47,11 +51,16 @@ public class GestionProduitImpl implements IGestionProduit {
     }
 
     @Override
-    public Produit addProduit(Produit produit, MultipartFile logo, Long categorieId) throws IOException {
+    public Produit addProduit(Produit produit, MultipartFile logo, Long categorieId, Long stockId) throws IOException {
         // Find and set the category
         Categorie c = categorieRepo.findById(categorieId)
                 .orElseThrow(() -> new IllegalArgumentException("Categorie not found with id: " + categorieId));
         produit.setCategorie(c);
+
+        // Find and set the stock
+        Stock s = stockRepo.findById(stockId)
+                .orElseThrow(() -> new IllegalArgumentException("stock not found with id: " + stockId));
+        produit.setStock(s);
 
         // Handle the logo upload
         if (logo != null && !logo.isEmpty()) {

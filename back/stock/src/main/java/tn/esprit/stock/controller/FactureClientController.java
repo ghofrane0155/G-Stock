@@ -19,9 +19,9 @@ public class FactureClientController {
         return IgFactureClient.retrieveAllFactureClients();
     }
 
-    @PostMapping("/add")
-    public FactureClient addFactureClient(@RequestBody FactureClient factureClient) {
-        return IgFactureClient.addFactureClient(factureClient);
+    @PostMapping("/add/{bonCommandeId}")
+    public FactureClient addFactureClient(@RequestBody FactureClient factureClient,@PathVariable("bonCommandeId") Long bonCommandeId) {
+        return IgFactureClient.addFactureClient(factureClient,bonCommandeId);
     }
 
 

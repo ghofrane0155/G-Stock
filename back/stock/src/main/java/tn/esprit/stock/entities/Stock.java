@@ -22,6 +22,7 @@ public class Stock {
     private Integer quantite;
 
     @OneToMany(mappedBy = "stock")
+    @JsonIgnore
     private List<Produit> produits;
 
 }

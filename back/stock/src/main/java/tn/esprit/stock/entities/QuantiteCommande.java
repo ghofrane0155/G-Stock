@@ -1,5 +1,6 @@
 package tn.esprit.stock.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class QuantiteCommande {
     @ManyToOne
     private Produit produit;
     @ManyToOne
+    @JsonIgnore
     private BonCommande bonCommande;
 
 }

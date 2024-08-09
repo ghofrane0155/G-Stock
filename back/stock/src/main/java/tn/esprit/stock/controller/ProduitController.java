@@ -31,14 +31,15 @@ public class ProduitController {
             @RequestParam("nomProduit") String nomProduit,
             @RequestParam("description") String description,
             @RequestParam("prixUnitaire") double prixUnitaire,
-            @RequestParam("categorieId") Long categorieId) {
+            @RequestParam("categorieId") Long categorieId,
+            @RequestParam("stockId") Long stockId) {
         try {
             Produit produit = new Produit();
             produit.setNomProduit(nomProduit);
             produit.setDescription(description);
             produit.setPrixUnitaire(prixUnitaire);
 
-            Produit savedProduit = IgProduit.addProduit(produit, logo, categorieId);
+            Produit savedProduit = IgProduit.addProduit(produit, logo, categorieId,stockId);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedProduit);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
