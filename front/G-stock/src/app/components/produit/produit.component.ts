@@ -71,7 +71,13 @@ export class ProduitComponent implements OnInit {
 
   addProduit(): void {
     if (this.produitForm.valid) {
-      this.produitService.addProduit(this.produitForm.value).subscribe(
+      const formData = new FormData();
+      const formValues = this.produitForm.value;
+      formData.append('produit', JSON.stringify(formValues));
+      formData.append('logo', this.produitForm.get('logo')?.value);
+      formData.append('categorieId', formValues.categorieId);
+  
+      this.produitService.addProduit(formData).subscribe(
         (produit: Produit) => {
           this.produits.push(produit);
           this.produitForm.reset();
@@ -83,6 +89,7 @@ export class ProduitComponent implements OnInit {
       );
     }
   }
+  
 
   updateProduit(): void {
     if (this.selectedProduit && this.produitForm.valid) {
