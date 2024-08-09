@@ -27,11 +27,18 @@ public class ProduitController {
     @PostMapping("/add")
     @Operation(summary = "Add a new produit")
     public ResponseEntity<Produit> addProduit(
-            @RequestPart("produit") Produit produit,
-            @RequestPart("logo") MultipartFile logo,
-            @RequestPart("categorieId")Long categorieId) {
+            @RequestParam("logo") MultipartFile logo,
+            @RequestParam("nomProduit") String nomProduit,
+            @RequestParam("description") String description,
+            @RequestParam("prixUnitaire") double prixUnitaire,
+            @RequestParam("categorieId") Long categorieId) {
         try {
-            Produit savedProduit = IgProduit.addProduit(produit, logo,categorieId);
+            Produit produit = new Produit();
+            produit.setNomProduit(nomProduit);
+            produit.setDescription(description);
+            produit.setPrixUnitaire(prixUnitaire);
+
+            Produit savedProduit = IgProduit.addProduit(produit, logo, categorieId);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedProduit);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
