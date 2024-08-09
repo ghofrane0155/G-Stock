@@ -48,29 +48,33 @@ public class GestionProduitImpl implements IGestionProduit {
 
     @Override
     public Produit addProduit(Produit produit, MultipartFile logo, Long categorieId) throws IOException {
+        // Find and set the category
         Categorie c = categorieRepo.findById(categorieId)
                 .orElseThrow(() -> new IllegalArgumentException("Categorie not found with id: " + categorieId));
         produit.setCategorie(c);
 
+        // Handle the logo upload
         if (logo != null && !logo.isEmpty()) {
-            String fileName = logo.getOriginalFilename();
+            String fileName = StringUtils.cleanPath(logo.getOriginalFilename());
             Path uploadPath = Paths.get(uploadDir);
 
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
-            try (var inputStream = logo.getInputStream()) {
-                assert fileName != null;
+            try (InputStream inputStream = logo.getInputStream()) {
                 Path filePath = uploadPath.resolve(fileName);
                 Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
                 produit.setLogo(fileName);
             } catch (IOException e) {
-                throw new IOException("Could not save file: " + fileName, e);
+                throw new IOException("Could not save logo file: " + fileName, e);
             }
         }
 
-        produit.setCodeAB(generateBarCode(produit));
+        // Optionally set a default or generated barcode
+        if (produit.getCodeAB() == null || produit.getCodeAB().isEmpty()) {
+            produit.setCodeAB(generateBarCode(produit));
+        }
 
         return produitRepo.save(produit);
     }
