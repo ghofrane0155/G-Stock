@@ -1,6 +1,7 @@
 package tn.esprit.stock.services;
 
 import tn.esprit.stock.entities.QuantiteCommande;
+
 import java.util.List;
 
 public interface IGestionQuantiteCommande {

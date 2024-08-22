@@ -19,6 +19,7 @@ public class Stock {
     @Id
     @GeneratedValue
     private Long idStock;
+    private String label; // or 'location', depending on what fits your use case
     private Integer quantite;
 
     @OneToMany(mappedBy = "stock")

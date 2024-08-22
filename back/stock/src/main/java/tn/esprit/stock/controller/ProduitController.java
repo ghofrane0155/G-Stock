@@ -78,9 +78,4 @@ public class ProduitController {
         List<Produit> produits = IgProduit.getProduitsSortedByPrixUnitaire();
         return ResponseEntity.ok(produits);
     }
-
-
-
-
-
 }

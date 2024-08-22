@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.stock.entities.BonCommande;
 import tn.esprit.stock.entities.Client;
-import tn.esprit.stock.entities.Produit;
 import tn.esprit.stock.repository.IBonCommandeRepository;
 import tn.esprit.stock.repository.IClientRepository;
-
 
 import java.util.List;
 

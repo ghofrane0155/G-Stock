@@ -2,15 +2,19 @@ package tn.esprit.stock.auth;
 
 
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import tn.esprit.stock.email.EmailService;
 import tn.esprit.stock.email.EmailTemplateName;
 import tn.esprit.stock.repository.IRoleRepository;
-import tn.esprit.stock.security.JwtService;
 import tn.esprit.stock.repository.ITokenRepository;
 import tn.esprit.stock.repository.IUserRepository;
+import tn.esprit.stock.security.JwtService;
 import tn.esprit.stock.entities.Token;
 import tn.esprit.stock.entities.User;
 
@@ -168,6 +172,18 @@ public class AuthenticationService {
             token.setLoggedOut(loggedOut);
             tokenRepository.save(token);
         });
+    }
+
+    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        final String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            final String token = authHeader.substring(7);
+            tokenRepository.findByToken(token).ifPresent(storedToken -> {
+                storedToken.setLoggedOut(true); // Mark token as logged out
+                tokenRepository.save(storedToken);
+            });
+        }
+        SecurityContextHolder.clearContext(); // Clear authentication context
     }
 
 

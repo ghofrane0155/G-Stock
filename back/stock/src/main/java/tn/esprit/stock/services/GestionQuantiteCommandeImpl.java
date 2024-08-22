@@ -3,7 +3,6 @@ package tn.esprit.stock.services;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.stock.entities.BonCommande;
-import tn.esprit.stock.entities.Categorie;
 import tn.esprit.stock.entities.Produit;
 import tn.esprit.stock.entities.QuantiteCommande;
 import tn.esprit.stock.repository.IBonCommandeRepository;

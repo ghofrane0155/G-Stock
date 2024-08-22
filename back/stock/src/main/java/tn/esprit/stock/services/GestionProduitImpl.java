@@ -16,14 +16,14 @@ import tn.esprit.stock.repository.ICategorieRepository;
 import tn.esprit.stock.repository.IProduitRepository;
 import tn.esprit.stock.repository.IStockRepository;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 
 @AllArgsConstructor
