@@ -1,5 +1,7 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
+import { TokenService } from '../../services/token/token.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +11,10 @@ import { isPlatformBrowser } from '@angular/common';
 export class NavbarComponent implements OnInit {
   currentUser: any = {};
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any) {}
+  constructor(
+    private router: Router,
+    private tokenService: TokenService,
+    @Inject(PLATFORM_ID) private platformId: any) {}
 
   ngOnInit() {
     this.loadCurrentUser();
@@ -27,6 +32,8 @@ export class NavbarComponent implements OnInit {
   logout() {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('user');
+      this.tokenService.removeToken(); // Remove token on logout
+      this.router.navigate(['/login']);
       // Add additional logout logic here if needed
     }
   }

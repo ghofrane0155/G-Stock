@@ -32,7 +32,7 @@
           <div class="collapse" id="dashboard">
             <ul class="nav nav-collapse">
               <li>
-                <a href="/dashboard1">
+                <a routerLink="/dashboard">
                   <span class="sub-item">Dashboard 1</span>
                 </a>
               </li>
@@ -40,6 +40,13 @@
           </div>
         </li>
 
+          <!-- Add your new "Stock Management" item here -->
+          <li class="nav-item">
+            <a routerLink="/stock" class="collapsed" aria-expanded="false">
+              <i class="fas fa-box"></i> <!-- Updated icon -->
+              <p>Stock Management</p>
+            </a>
+          </li>
         <!-- Add your new "Produit Management" item here -->
         <li class="nav-item">
           <a routerLink="/produit" class="collapsed" aria-expanded="false">

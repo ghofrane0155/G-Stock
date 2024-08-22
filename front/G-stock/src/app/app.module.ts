@@ -22,6 +22,7 @@ import { FournisseursComponent } from './components/fournisseurs/fournisseurs.co
 import { CommonModule } from '@angular/common';
 import { ProduitComponent } from './components/produit/produit.component';
 import { CategoryComponent } from './components/category/category.component';
+import { StockComponent } from './components/stock/stock.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { CategoryComponent } from './components/category/category.component';
     FournisseursComponent,
     ProduitComponent,
     CategoryComponent,
+    StockComponent,
   ],
   imports: [
     BrowserModule,

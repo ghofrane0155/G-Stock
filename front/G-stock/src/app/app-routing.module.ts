@@ -12,27 +12,29 @@ import { ClientsComponent } from './components/clients/clients.component';
 import { FournisseursComponent } from './components/fournisseurs/fournisseurs.component';
 import { ProduitComponent } from './components/produit/produit.component';
 import { CategoryComponent } from './components/category/category.component';
+import { StockComponent } from './components/stock/stock.component';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Redirect root to dashboard
+
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'activate-account',component: ActivateAccountComponent},
-  { path: 'view-profile', component: ViewProfileComponent },
-  { path: 'account-settings', component: AccountSettingsComponent },
+  { path: 'activate-account', component: ActivateAccountComponent },
 
-  { path: 'users', component: UsersComponent },
-  { path: 'clients', component: ClientsComponent },
-  { path: 'fournisseurs', component: FournisseursComponent },
-  { path: 'produit', component: ProduitComponent },
-  { path: 'category', component: CategoryComponent },
-
-
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'sidebar', component: SidebarComponent },
+  // Unprotected routes (AuthGuard removed)
+  { path: 'view-profile', component: ViewProfileComponent , canActivate: [AuthGuard] },
+  { path: 'account-settings', component: AccountSettingsComponent, canActivate: [AuthGuard] },
+  { path: 'users', component: UsersComponent , canActivate: [AuthGuard] },
+  { path: 'clients', component: ClientsComponent , canActivate: [AuthGuard] },
+  { path: 'fournisseurs', component: FournisseursComponent, canActivate: [AuthGuard] },
+  { path: 'produit', component: ProduitComponent , canActivate: [AuthGuard] },
+  { path: 'category', component: CategoryComponent , canActivate: [AuthGuard] },
+  { path: 'stock', component: StockComponent , canActivate: [AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'sidebar', component: SidebarComponent , canActivate: [AuthGuard] },
   
-  
-  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Default route
-  { path: '**', redirectTo: '/dashboard' } ,
+  { path: '**', redirectTo: '/login' },
 ];
 
 @NgModule({

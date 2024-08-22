@@ -1,97 +1,151 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Produit } from '../../models/produit';
-import { Category } from '../../models/category';
 import { ProduitService } from '../../services/produit.service';
 import { CategoryService } from '../../services/category.service';
-
-
+import { StockService } from '../../services/stock.service';
+import { Produit } from '../../models/produit';
+import { Category } from '../../models/category';
+import { Stock } from '../../models/stock';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-produit',
-  templateUrl: './produit.component.html',
-  styleUrls: ['./produit.component.scss']
+  templateUrl: './produit.component.html', // Adjust the path as necessary
 })
 export class ProduitComponent implements OnInit {
   produits: Produit[] = [];
   categories: Category[] = [];
+  stocks: Stock[] = [];
+
   produitForm: FormGroup;
   editingProduit: boolean = false;
   selectedProduit: Produit | null = null;
 
+
   // Properties for search and pagination
-  searchTerm: string = '';
   paginatedProduits: Produit[] = [];
+  filteredProduits: Produit[] = [];
+  searchTerm: string = '';
   currentPage: number = 1;
   itemsPerPage: number = 10;
   totalPages: number = 1;
 
   constructor(
+    private fb: FormBuilder,
     private produitService: ProduitService,
     private categoryService: CategoryService,
-    private fb: FormBuilder
+    private stockService: StockService
   ) {
     this.produitForm = this.fb.group({
       nomProduit: ['', Validators.required],
-      prixUnitaire: [0, [Validators.required, Validators.min(0)]],
-      codeBarre: [''],
-      description: [''],
+      description: ['', Validators.required],
+      prixUnitaire: [null, [Validators.required, Validators.min(0)]],
       categorieId: [null, Validators.required],
-      logo: ['']
+      stockId: [null, Validators.required],
+      logo: [null, Validators.required]
     });
   }
 
   ngOnInit(): void {
-    this.getProduits();
-    this.getCategories();
+    this.loadProduits();
+    this.loadCategories();
+    this.loadStocks();
   }
 
-  getProduits(): void {
-    this.produitService.getProduits().subscribe(
-      (data: Produit[]) => {
-        this.produits = data;
-        this.updatePaginatedProduits();
-      },
-      error => {
-        console.error('Error fetching produits:', error);
-      }
-    );
+  loadCategories() {
+    this.categoryService.getCategories().subscribe(categories => {
+      this.categories = categories;
+    });
   }
 
-  getCategories(): void {
-    this.categoryService.getCategories().subscribe(
-      (data: Category[]) => {
-        this.categories = data;
+  loadStocks() {
+    this.stockService.getStocks().subscribe(stocks => {
+      this.stocks = stocks;
+    });
+  }
+
+  loadProduits() {
+    this.produitService.getProduits().subscribe({
+      next: (produits: Produit[]) => {
+        this.produits = produits;
+        this.filteredProduits = produits;
+        this.totalPages = Math.ceil(this.filteredProduits.length / this.itemsPerPage);
+        this.paginateProducts();
       },
-      error => {
-        console.error('Error fetching categories:', error);
+      error: (err) => {
+        console.error('Failed to load produits', err);
       }
+    });
+  }
+    
+  paginateProducts() {
+    this.paginatedProduits = this.filteredProduits.slice(
+      (this.currentPage - 1) * this.itemsPerPage, 
+      this.currentPage * this.itemsPerPage
     );
+  }
+  
+  filterProducts() {
+    if (this.searchTerm) {
+      this.filteredProduits = this.produits.filter(p =>
+        p.nomProduit?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        p.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    } else {
+      this.filteredProduits = [...this.produits]; // Reset to original users if no search term
+    }
+    this.totalPages = Math.ceil(this.filteredProduits.length / this.itemsPerPage);
+    this.paginateProducts();
+  }
+  
+/**********addProduit************** */
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.produitForm.patchValue({ logo: file });
+    }
   }
 
   addProduit(): void {
     if (this.produitForm.valid) {
       const formData = new FormData();
-      const formValues = this.produitForm.value;
-      formData.append('produit', JSON.stringify(formValues));
+      formData.append('nomProduit', this.produitForm.get('nomProduit')?.value);
+      formData.append('description', this.produitForm.get('description')?.value);
+      formData.append('prixUnitaire', this.produitForm.get('prixUnitaire')?.value);
+      formData.append('categorieId', this.produitForm.get('categorieId')?.value);
+      formData.append('stockId', this.produitForm.get('stockId')?.value);
       formData.append('logo', this.produitForm.get('logo')?.value);
-      formData.append('categorieId', formValues.categorieId);
-  
+
       this.produitService.addProduit(formData).subscribe(
-        (produit: Produit) => {
-          this.produits.push(produit);
+        response => {
+          console.log('Produit added successfully', response);
+          Swal.fire('Success', 'Produit added successfully', 'success');
+          this.loadProduits(); // Reload products after adding
           this.produitForm.reset();
-          this.updatePaginatedProduits();
         },
         error => {
-          console.error('Error adding produit:', error);
+          console.error('Error adding produit', error);
+          Swal.fire('Error', 'Error adding produit', 'error');
         }
       );
+    } else {
+      Swal.fire('Warning', 'Form is not valid', 'warning');
     }
   }
-  
+/*********************************** */
+  editProduct(produit: Produit) {
+    this.editingProduit = true;
+    this.selectedProduit = produit;
+    this.produitForm.patchValue(produit);
+  }
 
-  updateProduit(): void {
+  clearSelection(): void {
+    this.selectedProduit = null;
+    this.produitForm.reset();
+    this.editingProduit = false;
+  }
+
+  updateProduit() {
     if (this.selectedProduit && this.produitForm.valid) {
       const updatedProduit: Produit = { ...this.selectedProduit, ...this.produitForm.value };
       this.produitService.updateProduit(updatedProduit).subscribe(
@@ -102,7 +156,7 @@ export class ProduitComponent implements OnInit {
             this.produitForm.reset();
             this.selectedProduit = null;
             this.editingProduit = false;
-            this.updatePaginatedProduits();
+            this.paginateProducts();
           }
         },
         error => {
@@ -112,72 +166,55 @@ export class ProduitComponent implements OnInit {
     }
   }
 
-  deleteProduit(id?: number): void {
-    if (id === undefined) {
-      console.error('Produit id is undefined.');
-      return;
-    }
-
-    this.produitService.deleteProduit(id).subscribe(
-      () => {
-        this.produits = this.produits.filter(produit => produit.idProduit !== id);
-        this.updatePaginatedProduits();
-      },
-      error => {
-        console.error('Error deleting produit:', error);
-      }
-    );
-  }
-
-  editProduit(produit: Produit): void {
-    this.selectedProduit = produit;
-    this.produitForm.patchValue(produit);
-    this.editingProduit = true;
-  }
-
-  clearSelection(): void {
-    this.selectedProduit = null;
-    this.produitForm.reset();
-    this.editingProduit = false;
-  }
-
-  // Filter produits based on search term
-  filteredProduits(): void {
-    this.updatePaginatedProduits();
-  }
-
-  // Update paginated produits based on the current page and search term
-  updatePaginatedProduits(): void {
-    const filteredProduits = this.produits.filter(produit => 
-      produit.nomProduit?.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
-      this.searchTerm.trim() === ''
-    );
-
-    this.totalPages = Math.ceil(filteredProduits.length / this.itemsPerPage);
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedProduits = filteredProduits.slice(startIndex, endIndex);
-  }
-
-  // Change the current page and update the paginated produits
-  changePage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePaginatedProduits();
+  deleteProduct(id: number|undefined) {
+    if (id !== undefined) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.produitService.deleteProduit(id).subscribe({
+            next: () => {
+              this.produits = this.produits.filter(c => c.idProduit !== id);
+              this.totalPages = Math.ceil(this.categories.length / this.itemsPerPage);
+              if (this.currentPage > this.totalPages) {
+                this.currentPage = this.totalPages > 0 ? this.totalPages : 1;
+              }
+              this.paginateProducts();
+              Swal.fire('Deleted!', 'Product has been deleted.', 'success');
+            },
+            error: (err) => {
+              Swal.fire('Error!', 'Failed to delete product.', 'error');
+              console.error('Failed to delete product', err);
+            }
+          });
+        }
+      });
+    } else {
+      console.error('Product ID is undefined or invalid:', id);
     }
   }
-
-  // Check if the page is active
-  isActivePage(page: number): boolean {
-    return this.currentPage === page;
+/******************************** */
+changePage(page: number) {
+  if (page > 0 && page <= this.totalPages) {
+    this.currentPage = page;
+    this.paginateProducts();
   }
+}
 
-  // Handle file change
-  onFileChange(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      // Handle file upload here
-      this.produitForm.patchValue({ logo: file.name }); // Example, adjust based on actual upload logic
-    }
-  }
+isActivePage(page: number): boolean {
+  return this.currentPage === page;
+}
+
+resetForm() {
+  this.produitForm.reset();
+  this.editingProduit = false;
+  this.selectedProduit = null;
+}
+
 }
