@@ -8,6 +8,7 @@ export interface Produit {
   prixUnitaire: number;
   codeAB?: string;
   logo?: string;
+  quantite?: number; // New field
   categorie: Category; // Reference to the Categorie interface
   stock: Stock;
 

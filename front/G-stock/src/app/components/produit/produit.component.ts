@@ -42,7 +42,8 @@ export class ProduitComponent implements OnInit {
       prixUnitaire: [null, [Validators.required, Validators.min(0)]],
       categorieId: [null, Validators.required],
       stockId: [null, Validators.required],
-      logo: [null, Validators.required]
+      logo: [null, Validators.required],
+      quantite: ['', Validators.required], // New field
     });
   }
 
@@ -89,6 +90,8 @@ export class ProduitComponent implements OnInit {
     if (this.searchTerm) {
       this.filteredProduits = this.produits.filter(p =>
         p.nomProduit?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        p.codeAB?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        p.categorie.nomCategorie?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         p.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     } else {
@@ -112,20 +115,20 @@ export class ProduitComponent implements OnInit {
       formData.append('nomProduit', this.produitForm.get('nomProduit')?.value);
       formData.append('description', this.produitForm.get('description')?.value);
       formData.append('prixUnitaire', this.produitForm.get('prixUnitaire')?.value);
+      formData.append('quantite', this.produitForm.get('quantite')?.value);
       formData.append('categorieId', this.produitForm.get('categorieId')?.value);
       formData.append('stockId', this.produitForm.get('stockId')?.value);
       formData.append('logo', this.produitForm.get('logo')?.value);
 
       this.produitService.addProduit(formData).subscribe(
         response => {
-          console.log('Produit added successfully', response);
-          Swal.fire('Success', 'Produit added successfully', 'success');
+          console.log('Product added successfully', response);
+          Swal.fire('Success', 'Product added successfully', 'success');
           this.loadProduits(); // Reload products after adding
           this.produitForm.reset();
         },
         error => {
-          console.error('Error adding produit', error);
-          Swal.fire('Error', 'Error adding produit', 'error');
+          Swal.fire('Error',error.error.error, 'error');
         }
       );
     } else {
@@ -180,12 +183,21 @@ export class ProduitComponent implements OnInit {
         if (result.isConfirmed) {
           this.produitService.deleteProduit(id).subscribe({
             next: () => {
-              this.produits = this.produits.filter(c => c.idProduit !== id);
-              this.totalPages = Math.ceil(this.categories.length / this.itemsPerPage);
+              this.produits = this.produits.filter(p => p.idProduit !== id);
+              // Update pagination
+              this.totalPages = Math.ceil(this.produits.length / this.itemsPerPage);
               if (this.currentPage > this.totalPages) {
                 this.currentPage = this.totalPages > 0 ? this.totalPages : 1;
               }
               this.paginateProducts();
+
+              // this.produits = this.produits.filter(c => c.idProduit !== id);
+              // this.totalPages = Math.ceil(this.categories.length / this.itemsPerPage);
+              // if (this.currentPage > this.totalPages) {
+              //   this.currentPage = this.totalPages > 0 ? this.totalPages : 1;
+              // }
+              // this.paginateProducts();
+
               Swal.fire('Deleted!', 'Product has been deleted.', 'success');
             },
             error: (err) => {

@@ -23,6 +23,8 @@ import { CommonModule } from '@angular/common';
 import { ProduitComponent } from './components/produit/produit.component';
 import { CategoryComponent } from './components/category/category.component';
 import { StockComponent } from './components/stock/stock.component';
+import { FactureClientListComponent } from './components/facture-client-list/facture-client-list.component';
+import { FactureClientDetailComponent } from './components/facture-client-detail/facture-client-detail.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { StockComponent } from './components/stock/stock.component';
     ProduitComponent,
     CategoryComponent,
     StockComponent,
+    FactureClientListComponent,
+    FactureClientDetailComponent,
   ],
   imports: [
     BrowserModule,

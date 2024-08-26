@@ -14,6 +14,8 @@ import { ProduitComponent } from './components/produit/produit.component';
 import { CategoryComponent } from './components/category/category.component';
 import { StockComponent } from './components/stock/stock.component';
 import { AuthGuard } from './auth/auth.guard';
+import { FactureClientListComponent } from './components/facture-client-list/facture-client-list.component';
+import { FactureClientDetailComponent } from './components/facture-client-detail/facture-client-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Redirect root to dashboard
@@ -33,6 +35,8 @@ const routes: Routes = [
   { path: 'stock', component: StockComponent , canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'sidebar', component: SidebarComponent , canActivate: [AuthGuard] },
+  { path: 'factureClients', component: FactureClientListComponent, canActivate: [AuthGuard] },
+  { path: 'factureClient/:id', component: FactureClientDetailComponent, canActivate: [AuthGuard] },
   
   { path: '**', redirectTo: '/login' },
 ];

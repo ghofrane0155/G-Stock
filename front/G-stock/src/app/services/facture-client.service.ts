@@ -20,4 +20,11 @@ export class FactureClientService {
     return this.http.get<FactureClient[]>(`${this.baseUrl}/getAll`);
   }
 
+  getFactureClientById(id: number): Observable<FactureClient> {
+    return this.http.get<FactureClient>(`${this.baseUrl}/${id}`);
+  }
+  
+  deleteFactureClient(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
  }

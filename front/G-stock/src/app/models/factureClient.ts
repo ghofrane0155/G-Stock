@@ -2,7 +2,8 @@ import { BonCommande } from "./bon-commande";
 
 export interface FactureClient {
   idFactureClient: number;
-  dateFactureClient: Date;
+  numeroFacture: number;
+  dateFactureClient: string;
   prixTotal: number;
   bonCommande: BonCommande;
 }
