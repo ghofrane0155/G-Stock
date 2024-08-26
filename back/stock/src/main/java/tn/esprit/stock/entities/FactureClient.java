@@ -16,6 +16,8 @@ public class FactureClient {
     @Id
     @GeneratedValue
     private Long idFactureClient;
+    @Column(nullable = false, unique = true)
+    private String numeroFacture;
     private LocalDate dateFactureClient;
     private double prixTotal;
 

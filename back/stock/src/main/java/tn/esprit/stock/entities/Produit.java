@@ -20,6 +20,8 @@ public class Produit {
     private double prixUnitaire;
     private String codeAB;
     private String logo;
+    private Integer quantite;  // New field for quantity
+
 
     @ManyToOne
     private Categorie categorie;

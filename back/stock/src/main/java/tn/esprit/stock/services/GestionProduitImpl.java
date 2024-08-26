@@ -62,6 +62,14 @@ public class GestionProduitImpl implements IGestionProduit {
                 .orElseThrow(() -> new IllegalArgumentException("stock not found with id: " + stockId));
         produit.setStock(s);
 
+        // Decrease stock quantity
+        if (s.getQuantite() >= produit.getQuantite()) {
+            s.setQuantite(s.getQuantite() - produit.getQuantite());
+            stockRepo.save(s);
+        } else {
+            throw new IllegalArgumentException("Not enough stock available for this product.");
+        }
+
         // Handle the logo upload
         if (logo != null && !logo.isEmpty()) {
             String fileName = StringUtils.cleanPath(logo.getOriginalFilename());
@@ -105,6 +113,17 @@ public class GestionProduitImpl implements IGestionProduit {
     @Override
     public Produit updateProduit(Produit produit) {
         if (produitRepo.existsById(produit.getIdProduit())) {
+            Produit existingProduit = produitRepo.findById(produit.getIdProduit()).orElseThrow();
+            int difference = produit.getQuantite() - existingProduit.getQuantite();
+
+            Stock s = produit.getStock();
+            if (s.getQuantite() >= difference) {
+                s.setQuantite(s.getQuantite() - difference);
+                stockRepo.save(s);
+            } else {
+                throw new IllegalArgumentException("Not enough stock available for this update.");
+            }
+
             return produitRepo.save(produit);
         } else {
             throw new IllegalArgumentException("Produit not found with id: " + produit.getIdProduit());
@@ -113,10 +132,19 @@ public class GestionProduitImpl implements IGestionProduit {
 
     @Override
     public void deleteProduit(Long idProduit) {
-        if (produitRepo.existsById(idProduit)) {
-            produitRepo.deleteById(idProduit);
-        } else {
-            throw new IllegalArgumentException("Produit not found with id: " + idProduit);
+        // Retrieve the product or throw an exception if not found
+        Produit produit = produitRepo.findById(idProduit)
+                .orElseThrow(() -> new IllegalArgumentException("Produit not found with id: " + idProduit));
+
+        // Get the associated stock
+        Stock stock = produit.getStock();
+        if (stock != null) {
+            stock.setQuantite(stock.getQuantite() + produit.getQuantite()); // Increase the stock quantity
+            stockRepo.save(stock); // Save the updated stock
         }
+
+        // Delete the product
+        produitRepo.deleteById(idProduit);
     }
+
 }

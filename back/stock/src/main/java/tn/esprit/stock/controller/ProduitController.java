@@ -31,6 +31,7 @@ public class ProduitController {
             @RequestParam("nomProduit") String nomProduit,
             @RequestParam("description") String description,
             @RequestParam("prixUnitaire") double prixUnitaire,
+            @RequestParam("quantite") Integer quantite,
             @RequestParam("categorieId") Long categorieId,
             @RequestParam("stockId") Long stockId) {
         try {
@@ -38,6 +39,7 @@ public class ProduitController {
             produit.setNomProduit(nomProduit);
             produit.setDescription(description);
             produit.setPrixUnitaire(prixUnitaire);
+            produit.setQuantite(quantite);
 
             Produit savedProduit = IgProduit.addProduit(produit, logo, categorieId,stockId);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedProduit);
