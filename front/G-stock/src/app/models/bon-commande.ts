@@ -3,7 +3,7 @@ import { QuantiteCommande } from './quantite-commande';
 
 export interface BonCommande {
   idBonCommande: number;
-  dateCommande: Date;
+  dateCommande?: Date;
   listQtCommande: QuantiteCommande[];
   client: Client;
 }

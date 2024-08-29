@@ -17,7 +17,6 @@ export class FactureClientListComponent implements OnInit {
   itemsPerPage: number = 10;
   totalPages: number = 0;
   showModal: boolean = false;
-  editMode: boolean = false;
   factureForm: FormGroup;
 
   constructor(
@@ -99,22 +98,8 @@ export class FactureClientListComponent implements OnInit {
   }
 
   openAddFactureModal(): void {
-    this.editMode = false;
     this.factureForm.reset();
     this.showModal = true;
-  }
-
-  editFactureClient(id: number | undefined): void {
-    if (id !== undefined) {
-      this.factureClientService.getFactureClientById(id).subscribe({
-        next: (facture) => {
-          this.factureForm.patchValue(facture);
-          this.editMode = true;
-          this.showModal = true;
-        },
-        error: (err) => console.error('Failed to load facture details', err)
-      });
-    }
   }
 
   addFacture(): void {
@@ -133,27 +118,10 @@ export class FactureClientListComponent implements OnInit {
     }
   }
   
-  // Example method to get bonCommandeId
   getBonCommandeId(): number {
-    // Implement your logic to retrieve the bonCommandeId
-    // This could be from a form, route parameters, or any other source
     return 123; // Replace with actual logic
   }
   
-
-  updateFacture(): void {
-    /*if (this.factureForm.valid) {
-      this.factureClientService.updateFactureClient(this.factureForm.value).subscribe({
-        next: () => {
-          Swal.fire('Updated!', 'Facture updated successfully.', 'success');
-          this.resetForm();
-          this.loadFactureClients();
-        },
-        error: (err) => console.error('Failed to update facture', err)
-      });
-    }*/
-  }
-
   resetForm(): void {
     this.showModal = false;
     this.factureForm.reset();

@@ -23,6 +23,7 @@
   <div class="sidebar-wrapper scrollbar scrollbar-inner">
     <div class="sidebar-content">
       <ul class="nav nav-secondary">
+        <!-- Dashboard Section -->
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
             <i class="fas fa-tachometer-alt"></i>
@@ -40,50 +41,74 @@
           </div>
         </li>
 
-          <!-- Add your new "Stock Management" item here -->
-          <li class="nav-item">
-            <a routerLink="/stock" class="collapsed" aria-expanded="false">
-              <i class="fas fa-box"></i> <!-- Updated icon -->
-              <p>Stock Management</p>
-            </a>
-          </li>
-        <!-- Add your new "Produit Management" item here -->
+        <!-- Stock Management -->
         <li class="nav-item">
-          <a routerLink="/produit" class="collapsed" aria-expanded="false">
-            <i class="fas fa-cube"></i> <!-- Updated icon -->
+          <a routerLink="/stock" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fas fa-box"></i>
+            <p>Stock Management</p>
+          </a>
+        </li>
+        
+        <!-- Produit Management -->
+        <li class="nav-item">
+          <a routerLink="/produit" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fas fa-cube"></i>
             <p>Produit Management</p>
           </a>
         </li>
-        <!-- Add your new "Category Management" item here -->
+        
+        <!-- Category Management -->
         <li class="nav-item">
-          <a routerLink="/category" class="collapsed" aria-expanded="false">
-            <i class="fas fa-tags"></i> <!-- Updated icon -->
+          <a routerLink="/category" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fas fa-tags"></i>
             <p>Category Management</p>
           </a>
         </li>
+
         <!-- Facture Management -->
         <li class="nav-item">
-          <a routerLink="/factureClients" class="collapsed" aria-expanded="false">
-            <i class="fas fa-file-invoice"></i> <!-- Icon for facture management -->
+          <a routerLink="/factureClients" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fas fa-file-invoice"></i>
             <p>Facture Management</p>
           </a>
         </li>
 
+        <!-- BonCommande -->
+        <li class="nav-item">
+          <a routerLink="/boncommande" routerLinkActive="active">
+            <i class="fas fa-receipt"></i>
+            <p>Bon Commande</p>
+          </a>
+        </li>
+        <!-- Facture -->
+        <li class="nav-item">
+          <a routerLink="/facture" routerLinkActive="active">
+            <i class="fas fa-file-invoice"></i>
+            <p>Facture</p>
+          </a>
+        </li>
+
+
+        <!-- Employees -->
         <li class="nav-item">
           <a routerLink="/users" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             <i class="fas fa-users"></i>
             <p>Employees</p>
           </a>
         </li>
+        
+        <!-- Clients -->
         <li class="nav-item">
           <a routerLink="/clients" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             <i class="fas fa-user-friends"></i>
             <p>Clients</p>
           </a>
         </li>
+
+        <!-- Fournisseurs -->
         <li class="nav-item">
           <a routerLink="/fournisseurs" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <i class="fas fa-truck"></i> <!-- Updated icon -->
+            <i class="fas fa-truck"></i>
             <p>Fournisseurs</p>
           </a>
         </li>
@@ -91,25 +116,28 @@
         <!-- Settings Section -->
         <li class="nav-section">
           <span class="sidebar-mini-icon">
-            <i class="fa fa-cogs"></i> <!-- Updated icon -->
+            <i class="fa fa-cogs"></i>
           </span>
           <h4 class="text-section">Settings</h4>
         </li>
+        
+        <!-- View Profile -->
         <li class="nav-item">
           <a routerLink="/view-profile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <i class="fas fa-user-circle"></i> <!-- Updated icon -->
+            <i class="fas fa-user-circle"></i>
             <p>View Profile</p>
           </a>
         </li>
+
+        <!-- Account Settings -->
         <li class="nav-item">
           <a routerLink="/account-settings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <i class="fas fa-cogs"></i> <!-- Updated icon -->
+            <i class="fas fa-cogs"></i>
             <p>Account Settings</p>
           </a>
         </li>
 
         <!-- Additional sidebar items here -->
-        
       </ul>
     </div>
   </div>

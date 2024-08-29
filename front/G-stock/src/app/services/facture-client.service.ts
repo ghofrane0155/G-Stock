@@ -12,6 +12,9 @@ export class FactureClientService {
 
   constructor(private http: HttpClient) {}
 
+  generateFacture(facture: FactureClient, bonCommandeId: number): Observable<FactureClient> {
+    return this.http.post<FactureClient>(`${this.baseUrl}/generateFacture/${bonCommandeId}`, {});
+  }
   addFactureClient(factureClient: FactureClient, bonCommandeId: number): Observable<FactureClient> {
     return this.http.post<FactureClient>(`${this.baseUrl}/add/${bonCommandeId}`, factureClient);
   }

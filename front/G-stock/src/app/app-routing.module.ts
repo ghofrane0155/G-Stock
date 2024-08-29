@@ -16,6 +16,9 @@ import { StockComponent } from './components/stock/stock.component';
 import { AuthGuard } from './auth/auth.guard';
 import { FactureClientListComponent } from './components/facture-client-list/facture-client-list.component';
 import { FactureClientDetailComponent } from './components/facture-client-detail/facture-client-detail.component';
+import { QuantiteCommandeComponent } from './components/quantite-commande/quantite-commande.component';
+import { BonCommandeComponent } from './components/bon-commande/bon-commande.component';
+import { FactureClientComponent } from './components/facture-client/facture-client.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Redirect root to dashboard
@@ -38,6 +41,10 @@ const routes: Routes = [
   { path: 'factureClients', component: FactureClientListComponent, canActivate: [AuthGuard] },
   { path: 'factureClient/:id', component: FactureClientDetailComponent, canActivate: [AuthGuard] },
   
+  { path: 'boncommande', component: BonCommandeComponent, canActivate: [AuthGuard] },
+  { path: 'facture', component: FactureClientComponent, canActivate: [AuthGuard] },
+  { path: 'quantite-commande', component: QuantiteCommandeComponent, canActivate: [AuthGuard] },
+
   { path: '**', redirectTo: '/login' },
 ];
 

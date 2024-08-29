@@ -1,0 +1,17 @@
+<div class="container">
+  <h2>Create BonCommande</h2>
+  
+  <form (ngSubmit)="createBonCommande()">
+    <div class="form-group">
+      <label for="client">Client</label>
+      <select id="client" [(ngModel)]="bonCommande.client" name="client" class="form-control" required>
+        <option *ngFor="let client of clients" [ngValue]="client">{{ client.nomClient }}</option>
+      </select>
+    </div>
+
+    <!-- Date input removed -->
+
+    <button type="submit" class="btn btn-primary">Create BonCommande</button>
+    <button type="button" class="btn btn-secondary" (click)="navigateToQuantiteCommande()">Go to Quantite Commande</button>
+  </form>
+</div>

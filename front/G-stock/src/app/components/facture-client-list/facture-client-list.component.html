@@ -60,9 +60,6 @@
                       <button class="btn btn-primary btn-sm" (click)="viewFactureClient(factureClient.idFactureClient)">
                         <i class="icon-eye"></i>
                       </button>
-                      <button class="btn btn-warning btn-sm" (click)="editFactureClient(factureClient.idFactureClient)">
-                        <i class="icon-pencil"></i>
-                      </button>
                       <button class="btn btn-danger btn-sm" (click)="deleteFactureClient(factureClient.idFactureClient)">
                         <i class="icon-trash"></i>
                       </button>
@@ -89,32 +86,25 @@
       </div>
     </div>
 
-    <!-- Add/Edit Facture Modal -->
+    <!-- Add Facture Modal -->
     <div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1" aria-labelledby="factureModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="factureModalLabel">{{ editMode ? 'Edit' : 'Add' }} Facture</h5>
+            <h5 class="modal-title" id="factureModalLabel">Add Facture</h5>
             <button type="button" class="btn-close" aria-label="Close" (click)="resetForm()"></button>
           </div>
           <div class="modal-body">
-            <form [formGroup]="factureForm" (ngSubmit)="editMode ? updateFacture() : addFacture()">
+            <form [formGroup]="factureForm" (ngSubmit)="addFacture()">
               <div class="mb-3">
                 <label for="dateFactureClient" class="form-label">Date</label>
-                <input type="date" class="form-control" id="dateFactureClient" formControlName="dateFactureClient">
-                <div *ngIf="factureForm.controls['dateFactureClient'].invalid && factureForm.controls['dateFactureClient'].touched" class="text-danger">
-                  Date is required.
-                </div>
+                <input type="date" id="dateFactureClient" class="form-control" formControlName="dateFactureClient" />
               </div>
               <div class="mb-3">
                 <label for="prixTotal" class="form-label">Prix Total</label>
-                <input type="number" class="form-control" id="prixTotal" formControlName="prixTotal">
-                <div *ngIf="factureForm.controls['prixTotal'].invalid && factureForm.controls['prixTotal'].touched" class="text-danger">
-                  <div *ngIf="factureForm.controls['prixTotal'].errors?.['required']">Prix Total is required.</div>
-                  <div *ngIf="factureForm.controls['prixTotal'].errors?.['min']">Prix Total must be greater than or equal to 0.</div>
-                </div>
+                <input type="number" id="prixTotal" class="form-control" formControlName="prixTotal" />
               </div>
-              <button type="submit" class="btn btn-primary" [disabled]="factureForm.invalid">{{ editMode ? 'Update' : 'Add' }} Facture</button>
+              <button type="submit" class="btn btn-primary">Add Facture</button>
             </form>
           </div>
         </div>

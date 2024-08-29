@@ -25,6 +25,9 @@ import { CategoryComponent } from './components/category/category.component';
 import { StockComponent } from './components/stock/stock.component';
 import { FactureClientListComponent } from './components/facture-client-list/facture-client-list.component';
 import { FactureClientDetailComponent } from './components/facture-client-detail/facture-client-detail.component';
+import { BonCommandeComponent } from './components/bon-commande/bon-commande.component';
+import { QuantiteCommandeComponent } from './components/quantite-commande/quantite-commande.component';
+import { FactureClientComponent } from './components/facture-client/facture-client.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,9 @@ import { FactureClientDetailComponent } from './components/facture-client-detail
     StockComponent,
     FactureClientListComponent,
     FactureClientDetailComponent,
+    BonCommandeComponent,
+    QuantiteCommandeComponent,
+    FactureClientComponent
   ],
   imports: [
     BrowserModule,
