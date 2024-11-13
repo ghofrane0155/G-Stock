@@ -1,0 +1,54 @@
+<div class="invoice-container" *ngIf="factureClient">
+    <div class="invoice-header">
+      <h1>Invoice</h1>
+      <p>Invoice Number: <strong>{{ factureClient.numeroFacture }}</strong></p>
+      <p>Date: {{ factureClient.dateFactureClient | date: 'longDate' }}</p>
+      <p>Total: <strong>{{ factureClient.prixTotal | currency }}</strong></p>
+    </div>
+  
+    <hr />
+  
+    <!-- Client Information -->
+    <div class="client-details">
+      <h3>Client Information</h3>
+      <p><strong>Name:</strong> {{ factureClient.bonCommande.client.nomClient }}</p>
+      <p><strong>Address:</strong> {{ factureClient.bonCommande.client.adresseClient }}</p>
+      <p><strong>Phone:</strong> {{ factureClient.bonCommande.client.phone }}</p>
+      <p><strong>Email:</strong> {{ factureClient.bonCommande.client.mail }}</p>
+    </div>
+  
+    <hr />
+  
+    <div class="invoice-details">
+      <h3>Invoice Details</h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let quantiteCommande of factureClient.bonCommande.listQtCommande">
+            <td>{{ quantiteCommande.produit.nomProduit }}</td>
+            <td>{{ quantiteCommande.quantiteCommande }}</td>
+            <td>{{ quantiteCommande.produit.prixUnitaire | currency }}</td>
+            <td>{{ quantiteCommande.montant | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <hr />
+  
+    <div class="invoice-footer">
+      <p>Thank you for your business!</p>
+    </div>
+  
+    <button id="generatePdfButton" class="btn btn-danger btn-sm" (click)="generatePDF()">Generate PDF <i class="fas fa-file-pdf"></i></button>
+    <a id="backButton" class="btn btn-primary btn-sm" [routerLink]="['/factureClients']">Back to Factures List</a>
+
+</div>
+  

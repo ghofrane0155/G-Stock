@@ -2,10 +2,13 @@ package tn.esprit.stock.auth;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,10 +45,13 @@ public class AuthenticationController {
         return ResponseEntity.ok().build();
     }
 
-    //logOut
-    @PostMapping("/logout/{userId}")
-    public ResponseEntity<?> logOut(@PathVariable Integer userId) {
-        service.updateLoggedOutStatus(userId,true);
+    // Logout
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logOut(HttpServletRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            service.logout(request, null, authentication);
+        }
         return ResponseEntity.ok().build();
     }
 

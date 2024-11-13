@@ -22,6 +22,11 @@ import { FournisseursComponent } from './components/fournisseurs/fournisseurs.co
 import { CommonModule } from '@angular/common';
 import { ProduitComponent } from './components/produit/produit.component';
 import { CategoryComponent } from './components/category/category.component';
+import { StockComponent } from './components/stock/stock.component';
+import { FactureClientListComponent } from './components/facture-client-list/facture-client-list.component';
+import { FactureClientDetailComponent } from './components/facture-client-detail/facture-client-detail.component';
+import { BonCommandeComponent } from './components/bon-commande/bon-commande.component';
+import { QuantiteCommandeComponent } from './components/quantite-commande/quantite-commande.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +45,11 @@ import { CategoryComponent } from './components/category/category.component';
     FournisseursComponent,
     ProduitComponent,
     CategoryComponent,
+    StockComponent,
+    FactureClientListComponent,
+    FactureClientDetailComponent,
+    BonCommandeComponent,
+    QuantiteCommandeComponent,
   ],
   imports: [
     BrowserModule,

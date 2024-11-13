@@ -26,4 +26,4 @@ public class Fournisseur {
     private String mail;
     private String fax;
 
-  }
+}

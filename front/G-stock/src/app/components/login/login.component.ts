@@ -28,6 +28,8 @@ export class LoginComponent {
           // Handle JSON response directly
           if (res && typeof res === 'object') {
             const jsonResponse = res as any;
+            
+            // Save the token in local storage
             this.tokenService.token = jsonResponse.token as string;
             localStorage.setItem('user', JSON.stringify(jsonResponse.user));
 

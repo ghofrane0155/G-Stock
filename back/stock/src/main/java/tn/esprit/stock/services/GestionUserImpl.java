@@ -1,6 +1,8 @@
 package tn.esprit.stock.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import tn.esprit.stock.entities.User;
 import tn.esprit.stock.repository.IUserRepository;
@@ -55,5 +57,12 @@ public class GestionUserImpl implements IGestionUser{
     @Override
     public void delete(Integer id) {
         ur.deleteById(id);
+    }
+
+    @Override
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName(); // Assuming the email is used as the username
+        return ur.findByEmail(email).orElse(null);
     }
 }

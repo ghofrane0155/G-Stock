@@ -11,9 +11,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.stock.entities.Categorie;
 import tn.esprit.stock.entities.Produit;
+import tn.esprit.stock.entities.Stock;
 import tn.esprit.stock.repository.ICategorieRepository;
 import tn.esprit.stock.repository.IProduitRepository;
-
+import tn.esprit.stock.repository.IStockRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,7 +22,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 
 @AllArgsConstructor
@@ -30,6 +32,8 @@ public class GestionProduitImpl implements IGestionProduit {
 
     private final IProduitRepository produitRepo;
     private final ICategorieRepository categorieRepo;
+    private final IStockRepository stockRepo;
+
     private static final String uploadDir = "uploads/";
 
     @Override
@@ -47,11 +51,24 @@ public class GestionProduitImpl implements IGestionProduit {
     }
 
     @Override
-    public Produit addProduit(Produit produit, MultipartFile logo, Long categorieId) throws IOException {
+    public Produit addProduit(Produit produit, MultipartFile logo, Long categorieId, Long stockId) throws IOException {
         // Find and set the category
         Categorie c = categorieRepo.findById(categorieId)
                 .orElseThrow(() -> new IllegalArgumentException("Categorie not found with id: " + categorieId));
         produit.setCategorie(c);
+
+        // Find and set the stock
+        Stock s = stockRepo.findById(stockId)
+                .orElseThrow(() -> new IllegalArgumentException("stock not found with id: " + stockId));
+        produit.setStock(s);
+
+        // Decrease stock quantity
+        if (s.getQuantite() >= produit.getQuantite()) {
+            s.setQuantite(s.getQuantite() - produit.getQuantite());
+            stockRepo.save(s);
+        } else {
+            throw new IllegalArgumentException("Not enough stock available for this product.");
+        }
 
         // Handle the logo upload
         if (logo != null && !logo.isEmpty()) {
@@ -96,6 +113,17 @@ public class GestionProduitImpl implements IGestionProduit {
     @Override
     public Produit updateProduit(Produit produit) {
         if (produitRepo.existsById(produit.getIdProduit())) {
+            Produit existingProduit = produitRepo.findById(produit.getIdProduit()).orElseThrow();
+            int difference = produit.getQuantite() - existingProduit.getQuantite();
+
+            Stock s = produit.getStock();
+            if (s.getQuantite() >= difference) {
+                s.setQuantite(s.getQuantite() - difference);
+                stockRepo.save(s);
+            } else {
+                throw new IllegalArgumentException("Not enough stock available for this update.");
+            }
+
             return produitRepo.save(produit);
         } else {
             throw new IllegalArgumentException("Produit not found with id: " + produit.getIdProduit());
@@ -104,10 +132,19 @@ public class GestionProduitImpl implements IGestionProduit {
 
     @Override
     public void deleteProduit(Long idProduit) {
-        if (produitRepo.existsById(idProduit)) {
-            produitRepo.deleteById(idProduit);
-        } else {
-            throw new IllegalArgumentException("Produit not found with id: " + idProduit);
+        // Retrieve the product or throw an exception if not found
+        Produit produit = produitRepo.findById(idProduit)
+                .orElseThrow(() -> new IllegalArgumentException("Produit not found with id: " + idProduit));
+
+        // Get the associated stock
+        Stock stock = produit.getStock();
+        if (stock != null) {
+            stock.setQuantite(stock.getQuantite() + produit.getQuantite()); // Increase the stock quantity
+            stockRepo.save(stock); // Save the updated stock
         }
+
+        // Delete the product
+        produitRepo.deleteById(idProduit);
     }
+
 }

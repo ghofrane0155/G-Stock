@@ -13,7 +13,7 @@ public interface IGestionProduit {
     List<Produit> getProduitsSortedByPrixUnitaire();
 
     @Transactional
-    Produit addProduit(Produit produit, MultipartFile logo,Long categorieId) throws IOException ;
+    Produit addProduit(Produit produit, MultipartFile logo,Long categorieId,Long stockId) throws IOException ;
 
     Produit updateProduit(Produit produit);
     void deleteProduit(Long idProduit);

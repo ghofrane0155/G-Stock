@@ -2,9 +2,7 @@ package tn.esprit.stock.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.stock.entities.Categorie;
 import tn.esprit.stock.entities.Fournisseur;
-import tn.esprit.stock.services.IGestionCategorie;
 import tn.esprit.stock.services.IGestionFournisseur;
 
 import java.util.List;

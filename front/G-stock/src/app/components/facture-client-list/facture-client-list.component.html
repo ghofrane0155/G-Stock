@@ -1,0 +1,111 @@
+<!-- Facture Client Component HTML -->
+<div class="container">
+  <div class="page-inner">
+    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+      <div>
+        <div class="page-header">
+          <h3 class="fw-bold mb-3">Facture Clients</h3>
+          <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+              <a routerLink="/dashboard">
+                <i class="icon-home"></i>
+              </a>
+            </li>
+            <li class="separator">
+              <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/factures">Factures</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="ms-md-auto py-2 py-md-0">
+        <button class="btn btn-primary btn-round" (click)="openAddFactureModal()">Add Facture</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">List Factures</h4>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search by ID or Date"
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="filterFactureClients()"
+            />
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table id="basic-datatables" class="display table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Numero Facture</th>
+                    <th>Date</th>
+                    <th>Prix Total</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let factureClient of paginatedFactureClients">
+                    <td>{{ factureClient.idFactureClient }}</td>
+                    <td>{{ factureClient.numeroFacture }}</td>
+                    <td>{{ factureClient.dateFactureClient | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ factureClient.prixTotal }}</td>
+                    <td>
+                      <button class="btn btn-primary btn-sm" [routerLink]="['/factureClient', factureClient.idFactureClient]">
+                        <i class="icon-eye"></i>
+                      </button>
+                      <button class="btn btn-danger btn-sm" (click)="deleteFactureClient(factureClient.idFactureClient)">
+                        <i class="icon-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pagination mt-3">
+              <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+                </li>
+                <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index">
+                  <a class="page-link" [class.active]="isActivePage(i + 1)" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Facture Modal -->
+    <div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1" aria-labelledby="factureModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="factureModalLabel">Add Facture</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="resetForm()"></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="factureForm" (ngSubmit)="addFacture()">
+              <div class="mb-3">
+                <label for="prixTotal" class="form-label">Prix Total</label>
+                <input type="number" id="prixTotal" class="form-control" formControlName="prixTotal" />
+              </div>
+              <button type="submit" class="btn btn-primary">Add Facture</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

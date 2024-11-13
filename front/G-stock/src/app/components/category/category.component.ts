@@ -34,6 +34,8 @@ export class CategoryComponent implements OnInit {
     this.categoryService.getCategories().subscribe({
       next: (categories: Category[]) => {
         this.categories = categories;
+        console.log(this.categories); // Log categories to see their structure
+
         this.totalPages = Math.ceil(this.categories.length / this.itemsPerPage);
         this.updatePagination();
       },

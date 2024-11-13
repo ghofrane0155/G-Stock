@@ -13,4 +13,6 @@ public interface IGestionUser {
 
     User update(User user);
     void delete(Integer id);
+    User getCurrentUser();
+
 }

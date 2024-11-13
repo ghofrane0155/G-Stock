@@ -1,0 +1,136 @@
+<div class="container">
+  <div class="page-inner">
+    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+      <div>
+        <div class="page-header">
+          <h3 class="fw-bold mb-3">Bon Commande</h3>
+          <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+              <a routerLink="/dashboard">
+                <i class="icon-home"></i>
+              </a>
+            </li>
+            <li class="separator">
+              <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/bon-commandes">Bon Commandes</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="ms-md-auto py-2 py-md-0">
+        <button class="btn btn-primary btn-round" (click)="submit()">Add BonCommande</button>
+      </div>
+    </div>
+
+    <!-- Add BonCommande Form -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Add BonCommande</h4>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="submit()">
+              <!-- Form fields go here -->
+              <!-- Client selection -->
+              <div class="form-group">
+                <label for="client">Client</label>
+                <select id="client" [(ngModel)]="bonCommande.client" name="client" class="form-control" required>
+                  <option *ngFor="let client of clients" [ngValue]="client">{{ client.nomClient }}</option>
+                </select>
+              </div>
+              <!-- Products section -->
+              <div class="form-group">
+                <label>Products</label>
+                <div *ngFor="let qtCommande of bonCommande.listQtCommande; let i = index" class="product-row">
+                  <div class="row">
+                    <!-- Product select -->
+                    <div class="col-6">
+                      <select class="form-control" [(ngModel)]="qtCommande.produit" [ngModelOptions]="{standalone: true}">
+                        <option *ngFor="let produit of produits" [ngValue]="produit">{{ produit.nomProduit }}</option>
+                      </select>
+                    </div>
+                    <!-- Quantity input -->
+                    <div class="col-4">
+                      <input type="number" min="1" class="form-control" placeholder="Quantité" [(ngModel)]="qtCommande.quantiteCommande" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <!-- Remove button -->
+                    <div class="col-2">
+                      <button type="button" class="btn btn-danger" (click)="removeProduct(i)">Remove</button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Add Product button -->
+                <div class="form-group mt-2">
+                  <button type="button" class="btn btn-primary" (click)="addProduct()">Add Product</button>
+                </div>
+              </div>
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-success mt-3">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Display List of BonCommandes -->
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">List of Bon Commandes</h4>
+            <input type="text" class="form-control" placeholder="Search by ID or Client" [(ngModel)]="searchTerm" (ngModelChange)="filterBonCommandes()" />
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="display table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Client</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let bonCommande of paginatedBonCommandes">
+                    <td>{{ bonCommande.idBonCommande }}</td>
+                    <td>{{ bonCommande.client.nomClient }}</td>
+                    <td>{{ bonCommande.dateCommande| date: 'dd/MM/yyyy' }}</td>
+                    <td>
+                      <button class="btn btn-primary btn-sm" [routerLink]="['/bon-commande', bonCommande.idBonCommande]">
+                        <i class="icon-eye"></i>
+                      </button>
+                      <button class="btn btn-success btn-sm" 
+                              (click)="generateFacture(bonCommande.idBonCommande)"
+                              [disabled]="factureGenerated[bonCommande.idBonCommande]">
+                        <i class="fas fa-file-invoice"></i>
+                      </button>
+
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pagination mt-3">
+              <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+                </li>
+                <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index">
+                  <a class="page-link" [class.active]="isActivePage(i + 1)" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

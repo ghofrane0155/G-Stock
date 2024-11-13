@@ -1,4 +1,5 @@
 import { Category } from "./category";
+import { Stock } from "./stock";
 
 export interface Produit {
   idProduit?: number;
@@ -7,5 +8,8 @@ export interface Produit {
   prixUnitaire: number;
   codeAB?: string;
   logo?: string;
-  categorie?: Category; // Reference to the Categorie interface
+  quantite?: number; // New field
+  categorie: Category; // Reference to the Categorie interface
+  stock: Stock;
+
 }
